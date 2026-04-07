@@ -1,55 +1,69 @@
 <template>
-  <div class="tool-wrapper container">
-    <header class="tool-header">
-      <router-link to="/" class="back-link clickable">
-        <PhArrowLeft :size="18" />
-        Späť na všetky nástroje
-      </router-link>
-      
-      <div class="header-main">
-        <div class="header-info">
+  <div class="tool-page">
+
+    <!-- ── Top bar ── -->
+    <div class="tool-topbar">
+      <div class="tool-topbar-inner container">
+
+        <!-- Left: icon + name + desc -->
+        <div class="tool-identity">
           <div class="tool-icon">
-            <component :is="icon" :size="32" weight="duotone" />
+            <component :is="icon" :size="26" weight="duotone" />
           </div>
-          <div>
-            <h1 class="tool-title">{{ title }}</h1>
-            <p class="tool-description">{{ description }}</p>
+          <div class="tool-meta">
+            <h1 class="tool-name">{{ title }}</h1>
+            <p class="tool-desc">{{ description }}</p>
           </div>
         </div>
-        
-        <div class="tool-actions">
-          <button class="btn-share clickable">
-            <PhShareNetwork :size="20" />
+
+        <!-- Right: share + back -->
+        <div class="tool-topbar-actions">
+          <router-link to="/" class="back-link clickable">
+            <PhArrowLeft :size="14" />
+            Späť
+          </router-link>
+          <button class="btn-share clickable" @click="share" :class="{ copied }">
+            <PhCheckCircle v-if="copied" :size="17" />
+            <PhShareNetwork v-else :size="17" />
           </button>
         </div>
+
       </div>
-    </header>
+    </div>
 
-    <main class="tool-content glass">
-      <slot></slot>
-    </main>
+    <!-- ── Body ── -->
+    <div class="tool-body container">
 
-    <aside class="tool-sidebar">
-      <section class="sidebar-section">
-        <h3>Súvisiace nástroje</h3>
+      <!-- Main content -->
+      <main class="tool-main">
+        <div class="tool-content glass">
+          <slot></slot>
+        </div>
+      </main>
+
+      <!-- Sidebar -->
+      <aside class="tool-sidebar" v-if="related?.length">
+        <h3 class="sidebar-title">Súvisiace nástroje</h3>
         <div class="related-list">
-          <router-link 
-            v-for="t in related" 
-            :key="t.name" 
+          <router-link
+            v-for="t in related"
+            :key="t.name"
             :to="t.to"
             class="related-item clickable"
           >
-            <component :is="t.icon" :size="18" weight="duotone" />
+            <component :is="t.icon" :size="16" weight="duotone" />
             <span>{{ t.name }}</span>
           </router-link>
         </div>
-      </section>
-    </aside>
+      </aside>
+
+    </div>
   </div>
 </template>
 
 <script setup>
-import { PhArrowLeft, PhShareNetwork } from '@phosphor-icons/vue'
+import { ref } from 'vue'
+import { PhArrowLeft, PhShareNetwork, PhCheckCircle } from '@phosphor-icons/vue'
 
 defineProps({
   title: String,
@@ -57,139 +71,235 @@ defineProps({
   icon: Object,
   related: Array
 })
+
+const copied = ref(false)
+
+const share = async () => {
+  try {
+    await navigator.clipboard.writeText(window.location.href)
+    copied.value = true
+    setTimeout(() => { copied.value = false }, 2000)
+  } catch {
+    /* ignore */
+  }
+}
 </script>
 
 <style scoped>
-.tool-wrapper {
-  padding-top: calc(var(--nav-height) + 4rem);
-  padding-bottom: 6rem;
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 3rem;
-}
-
-.tool-header {
-  grid-column: 1 / -1;
-  margin-bottom: 2rem;
-}
-
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  color: var(--text-muted);
-  margin-bottom: 2rem;
-  transition: color 0.3s;
-}
-
-.back-link:hover {
-  color: var(--accent-gold);
-}
-
-.header-main {
+/* ── Page ── */
+.tool-page {
+  min-height: 100vh;
+  padding-top: var(--nav-height);
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
+}
+
+/* ── Top bar ── */
+.tool-topbar {
+  position: sticky;
+  top: var(--nav-height);
+  z-index: 10;
+  background: rgba(5,5,8,0.85);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--border-dim);
+}
+
+.tool-topbar-inner {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: 1rem;
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
 }
 
-.header-info {
+/* Tool identity */
+.tool-identity {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 0.85rem;
+  min-width: 0;
 }
 
 .tool-icon {
-  width: 72px;
-  height: 72px;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--bg-soft);
   border: 1px solid var(--border-soft);
-  border-radius: var(--radius-lg);
+  border-radius: 14px;
   color: var(--accent-gold);
 }
 
-.tool-title {
-  font-family: var(--font-heading);
-  font-size: 2.25rem;
-  font-weight: 800;
-  margin-bottom: 0.5rem;
+.tool-meta {
+  min-width: 0;
 }
 
-.tool-description {
-  color: var(--text-secondary);
-  font-size: 1.1rem;
+.tool-name {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tool-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Actions */
+.tool-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  padding: 0.4rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-dim);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.back-link:hover {
+  color: var(--text-primary);
+  border-color: var(--border-soft);
 }
 
 .btn-share {
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-md);
+  border-radius: 10px;
   border: 1px solid var(--border-dim);
   background: var(--bg-soft);
   color: var(--text-muted);
-  transition: all 0.3s;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
 }
 
-.btn-share:hover {
+.btn-share:hover,
+.btn-share.copied {
   border-color: var(--accent-gold);
   color: var(--accent-gold);
 }
 
+/* ── Body ── */
+.tool-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 1.5rem;
+  padding-top: 1.5rem;
+  padding-bottom: 3rem;
+  align-items: start;
+}
+
+/* Main */
+.tool-main {
+  min-width: 0;
+}
+
 .tool-content {
-  padding: 3rem;
   border-radius: var(--radius-lg);
-  min-height: 400px;
+  padding: 2rem;
+  min-height: 300px;
 }
 
+/* Sidebar */
 .tool-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  position: sticky;
+  top: calc(var(--nav-height) + 62px);
 }
 
-.sidebar-section h3 {
-  font-family: var(--font-heading);
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 1.25rem;
-  color: var(--text-primary);
+.sidebar-title {
+  font-size: 0.65rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+  margin-bottom: 0.75rem;
+  padding-left: 0.25rem;
 }
 
 .related-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.4rem;
 }
 
 .related-item {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1rem;
+  gap: 0.6rem;
+  padding: 0.7rem 0.85rem;
   background: var(--bg-soft);
   border: 1px solid var(--border-dim);
-  border-radius: var(--radius-md);
-  font-size: 0.9rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--text-secondary);
-  transition: all 0.3s;
+  transition: all 0.2s;
 }
 
 .related-item:hover {
   border-color: var(--accent-gold);
   color: var(--accent-gold);
-  transform: translateX(5px);
+  background: rgba(197,169,106,0.05);
+  transform: translateX(3px);
 }
 
-@media (max-width: 1024px) {
-  .tool-wrapper {
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .tool-body {
     grid-template-columns: 1fr;
+  }
+
+  .tool-sidebar {
+    position: static;
+  }
+}
+
+@media (max-width: 600px) {
+  .tool-name {
+    font-size: 1rem;
+  }
+
+  .tool-desc {
+    display: none;
+  }
+
+  .tool-content {
+    padding: 1.25rem;
+  }
+
+  .back-link span {
+    display: none;
   }
 }
 </style>
