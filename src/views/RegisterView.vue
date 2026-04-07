@@ -314,9 +314,9 @@ const translateError = (msg) => {
   font-size: clamp(2.8rem, 4.5vw, 4rem);
   font-weight: 900;
   letter-spacing: -0.03em;
-  line-height: 1.0;
+  line-height: 1.18;
   color: var(--text-primary);
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
 .left-sub {
@@ -364,7 +364,7 @@ const translateError = (msg) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 3rem 2rem;
+  padding: 3.5rem 2rem;
   overflow-y: auto;
 }
 
@@ -373,6 +373,7 @@ const translateError = (msg) => {
   max-width: 400px;
   display: flex;
   flex-direction: column;
+  padding-top: 0.5rem;
 }
 
 .form-header {
@@ -386,6 +387,9 @@ const translateError = (msg) => {
   letter-spacing: -0.025em;
   color: var(--text-primary);
   margin-bottom: 0.35rem;
+  overflow: visible;
+  line-height: 1.2;
+  padding-top: 0.1rem;
 }
 
 .form-sub {
