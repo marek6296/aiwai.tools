@@ -1,0 +1,127 @@
+:root {
+  /* Colors - Brutal Premium Palette */
+  --bg-deep: #050508;
+  --bg-main: #09090d;
+  --bg-soft: #0f1018;
+  --bg-card: rgba(15, 16, 24, 0.7);
+  --bg-glass: rgba(15, 16, 24, 0.4);
+  
+  --accent-gold: #c5a96a;
+  --accent-gold-dark: #a8893e;
+  --accent-gold-light: #d4bc85;
+  --accent-cyan: #00f2ff;
+  
+  --text-primary: #f7f4ee;
+  --text-secondary: #cccac3;
+  --text-muted: #87857e;
+  --text-dim: #4a4843;
+  
+  --border-dim: rgba(197, 169, 106, 0.08);
+  --border-soft: rgba(197, 169, 106, 0.15);
+  --border-bright: rgba(197, 169, 106, 0.35);
+  
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  
+  /* Fonts */
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Outfit', var(--font-main);
+  --font-serif: 'Playfair Display', serif;
+  --font-syne: 'Syne', var(--font-heading);
+  
+  /* Layout */
+  --nav-height: 72px;
+  --max-width: 1440px;
+}
+
+/* Reset & Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: auto; /* Handled by Lenis */
+}
+
+body {
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-soft);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-gold-dark);
+}
+
+/* Utilities */
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* GSAP Specific */
+.reveal {
+  opacity: 1;
+  will-change: transform, opacity;
+}
+
+/* Glassmorphism - Optimized for GPU */
+.glass {
+  background: var(--bg-glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-dim);
+  transform: translateZ(0);
+}
+
+/* Global Smoothness */
+body {
+  cursor: default;
+}
+
+a, button, .clickable {
+  cursor: pointer;
+}
+
+/* Removing the heavy SVG grain to favor Atmosphere.vue's optimized overlay */
