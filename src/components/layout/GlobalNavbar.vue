@@ -174,7 +174,16 @@ const searchQuery = ref('')
 
 const categories = [
   { name: 'Domov', href: '/', internal: true },
-  { name: 'Všetky nástroje', href: '/#tools', internal: true },
+  { name: 'Médiá & Konverzie', href: '/media/pdf-word', internal: true },
+  { name: 'Foto & Dizajn', href: '/design/img-compress', internal: true },
+  { name: 'Text & Písanie', href: '/text/word-counter', internal: true },
+  { name: 'AI Nástroje', href: '/ai/ai-prompt-mid', internal: true },
+  { name: 'Kód & Technológie', href: '/dev/json-format', internal: true },
+  { name: 'Marketing & Sociálne', href: '/marketing/yt-down', internal: true },
+  { name: 'Financie & Biznis', href: '/finance/loan-calc', internal: true },
+  { name: 'Zdravie & Životný štýl', href: '/lifestyle/bmr-calc', internal: true },
+  { name: 'Zábava & Produktivita', href: '/fun/wheel-fortune', internal: true },
+  { name: '—', href: '#', internal: true },
   { name: 'AIWai.news', href: 'https://aiwai.news', internal: false },
   { name: 'AIWai.app', href: 'https://aiwai.app', internal: false },
 ]

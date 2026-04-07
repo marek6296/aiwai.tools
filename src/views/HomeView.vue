@@ -3,10 +3,6 @@
     <!-- Hero Section -->
     <header class="hero container">
       <div class="hero-content reveal">
-        <div class="hero-badge">
-          <span class="pulse"></span>
-          300+ Prémiových Nástrojov
-        </div>
         <h1 class="hero-title">
           Všetko čo potrebuješ, <br />
           <span class="accent-text">na jednom mieste.</span>
@@ -31,9 +27,9 @@
       <div class="container strip-inner">
         <span class="strip-label">Rýchly prístup:</span>
         <div class="strip-items">
-          <router-link to="/pdf/pdf-word" class="strip-item clickable"><PhFilePdf weight="duotone" /> PDF do Wordu</router-link>
-          <router-link to="/social/yt-down" class="strip-item clickable"><PhVideo weight="duotone" /> YouTube Downloader</router-link>
-          <router-link to="/img/img-compress" class="strip-item clickable"><PhFrameCorners weight="duotone" /> Kompresia obrázka</router-link>
+          <router-link to="/media/pdf-word" class="strip-item clickable"><PhFilePdf weight="duotone" /> PDF do Wordu</router-link>
+          <router-link to="/marketing/yt-down" class="strip-item clickable"><PhVideo weight="duotone" /> YouTube Downloader</router-link>
+          <router-link to="/design/img-compress" class="strip-item clickable"><PhFrameCorners weight="duotone" /> Kompresia obrázka</router-link>
           <router-link to="/dev/json-format" class="strip-item clickable"><PhCode weight="duotone" /> JSON Formátovač</router-link>
         </div>
       </div>
@@ -68,12 +64,10 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import BentoCard from '../components/ui/BentoCard.vue'
 import { store } from '../store/toolStore'
-import { 
-  PhArrowRight, PhFilePdf, PhImage, PhVideo, PhMusicNotes, 
-  PhTextT, PhCalculator, PhRuler, PhCurrencyCircleDollar, 
-  PhCode, PhLockKey, PhCalendar, PhPaintBrush, 
-  PhShareNetwork, PhFrameCorners, PhChartBar, PhDatabase, 
-  PhPalette, PhTimer, PhMegaphone
+import {
+  PhArrowRight, PhFilePdf, PhImage, PhTextT, PhCode,
+  PhMegaphone, PhTrendUp, PhFirstAid, PhGameController,
+  PhRobot, PhFrameCorners
 } from '@phosphor-icons/vue'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -82,22 +76,15 @@ const categories = computed(() => store.categories || [])
 
 const getIconForCategory = (id) => {
   const icons = {
-    pdf: PhFilePdf,
-    img: PhImage,
-    video: PhVideo,
-    audio: PhMusicNotes,
-    text: PhTextT,
-    calc: PhCalculator,
-    unit: PhRuler,
-    dev: PhCode,
-    security: PhLockKey,
-    seo: PhChartBar,
+    media:     PhFilePdf,
+    design:    PhImage,
+    text:      PhTextT,
+    ai:        PhRobot,
+    dev:       PhCode,
     marketing: PhMegaphone,
-    data: PhDatabase,
-    ui: PhPalette,
-    productivity: PhTimer,
-    finance: PhCurrencyCircleDollar,
-    social: PhShareNetwork
+    finance:   PhTrendUp,
+    lifestyle: PhFirstAid,
+    fun:       PhGameController,
   }
   return icons[id] || PhTextT
 }
@@ -136,47 +123,16 @@ onMounted(() => {
 
 <style scoped>
 .home-view {
-  padding-top: calc(var(--nav-height) + 4rem);
+  padding-top: calc(var(--nav-height) + 2rem);
 }
 
 .hero {
-  min-height: 60vh;
+  min-height: 50vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  margin-bottom: 6rem;
-}
-
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.5rem 1rem;
-  background: var(--bg-soft);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--radius-full);
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--accent-gold);
-  margin-bottom: 2rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.pulse {
-  width: 8px;
-  height: 8px;
-  background: var(--accent-gold);
-  border-radius: 50%;
-  box-shadow: 0 0 10px var(--accent-gold);
-  animation: pulse-ring 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
-}
-
-@keyframes pulse-ring {
-  0% { transform: scale(0.9); opacity: 0.7; }
-  50% { transform: scale(1.2); opacity: 1; }
-  100% { transform: scale(0.9); opacity: 0.7; }
+  margin-bottom: 4rem;
 }
 
 .hero-title {

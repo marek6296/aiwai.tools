@@ -38,12 +38,10 @@ import ToolWrapper from '../components/layout/ToolWrapper.vue'
 import VideoDownloader from '../components/engines/VideoDownloader.vue'
 import TextEngine from '../components/engines/TextEngine.vue'
 import MultimediaEngine from '../components/engines/MultimediaEngine.vue'
-import { 
-  PhHourglass, PhFilePdf, PhImage, PhVideo, PhMusicNotes, 
-  PhTextT, PhCalculator, PhCode, PhShareNetwork, PhTimer, 
-  PhMegaphone, PhPalette, PhLockKey, PhRuler, PhRobot,
-  PhFirstAid, PhFlask, PhGlobe, PhBriefcase, PhHouse,
-  PhPencilLine, PhGameController, PhTrendUp, PhTerminalWindow
+import {
+  PhHourglass, PhFilePdf, PhImage, PhCode, PhMegaphone,
+  PhTextT, PhCalculator, PhRobot, PhFirstAid, PhGameController,
+  PhTrendUp
 } from '@phosphor-icons/vue'
 
 const route = useRoute()
@@ -55,71 +53,93 @@ const tool = computed(() => {
 
 const toolIcon = computed(() => {
   const icons = {
-    pdf: PhFilePdf,
-    img: PhImage,
-    video: PhVideo,
-    audio: PhMusicNotes,
-    text: PhTextT,
-    calc: PhCalculator,
-    unit: PhRuler,
-    dev: PhCode,
-    security: PhLockKey,
+    media:     PhFilePdf,
+    design:    PhImage,
+    text:      PhTextT,
+    ai:        PhRobot,
+    dev:       PhCode,
     marketing: PhMegaphone,
-    ui: PhPalette,
-    productivity: PhTimer,
-    social: PhShareNetwork,
-    ai: PhRobot,
-    health: PhFirstAid,
-    sci: PhFlask,
-    net: PhGlobe,
-    law: PhBriefcase,
-    home: PhHouse,
-    writing: PhPencilLine,
-    fun: PhGameController,
-    "finance-pro": PhTrendUp,
-    "tech-adv": PhTerminalWindow
+    finance:   PhTrendUp,
+    lifestyle: PhFirstAid,
+    fun:       PhGameController,
   }
   return icons[route.params.categoryId] || PhTextT
 })
 
-const isImplemented = computed(() => {
-  return !!engineComponent.value
-})
+const isImplemented = computed(() => !!engineComponent.value)
+
+// Tool-ID sets per engine (for merged categories)
+const PDF_TOOLS     = new Set(['pdf-word','pdf-merge','pdf-split','pdf-compress','pdf-lock'])
+const AUDIO_TOOLS   = new Set(['mp3-wav','wav-mp3','audio-trim','audio-join','vol-boost'])
+const VIDEO_TOOLS   = new Set(['mp4-avi','mov-mp4','video-gif','mp4-mp3','video-compress'])
+const IMG_TOOLS     = new Set(['img-compress','img-upscale','img-remove-bg','png-jpg','img-to-webp','img-to-base64'])
+const UI_TOOLS      = new Set(['color-conv','gradient-gen','glass-gen','shadow-gen','contrast-checker','palette-gen'])
+const TEXT_TOOLS    = new Set(['word-counter','case-converter','lorem-ipsum','duplicate-remover','list-sorter','diff-checker'])
+const WRITING_TOOLS = new Set(['ig-caption','reel-ideas','bio-link','text-expander','passive-active'])
+const NET_TOOLS     = new Set(['ip-lookup','dns-lookup','port-scanner','subnet-calc'])
+const TECH_TOOLS    = new Set(['htaccess-gen','nginx-config','ssh-keygen','ssl-checker'])
+const SEC_TOOLS     = new Set(['pass-gen','md5-hash','sha256-hash','uuid-gen','base64','html-entity','json-ts','url-parser','regex-tester','cron-helper','json-format'])
+const SOCIAL_TOOLS  = new Set(['yt-down','tt-down','ig-down','fb-down','yt-thumb','hashtag-gen'])
+const MKT_TOOLS     = new Set(['qr-gen','meta-tags','sitemap-helper','robots-gen','keyword-research'])
+const CALC_TOOLS    = new Set(['loan-calc','compound-interest','tip-calc','age-calc','vat-calc','percentage-calc'])
+const FIN_TOOLS     = new Set(['retirement-calc','inflation-impact','roi-calc','margin-calc'])
+const LAW_TOOLS     = new Set(['privacy-gen','tos-gen','invoice-mini'])
+const HEALTH_TOOLS  = new Set(['bmr-calc','water-goal','ideal-weight','calorie-burn','bmi-calc'])
+const HOME_TOOLS    = new Set(['kitchen-conv','washing-sym','bac-calc','oven-temp'])
+const SCI_TOOLS     = new Set(['morse-code','binary-base','periodic-table','unit-pro'])
+const FUN_TOOLS     = new Set(['wheel-fortune','spin-bottle','multi-dice','dice-roll','coin-flip','score-keeper','rps-game','truth-dare','card-picker'])
+const PROD_TOOLS    = new Set(['pomodoro','random-picker','time-conv','binary-clock'])
 
 const engineComponent = computed(() => {
   if (!tool.value) return null
-  
-  const catId = route.params.categoryId
-  
-  // Specific High-Fidelity Tools
-  if (tool.value.id === 'word-counter') return defineAsyncComponent(() => import('./tools/WordCounter.vue'))
-  if (tool.value.id === 'bmi-calc') return defineAsyncComponent(() => import('../components/engines/HealthEngine.vue'))
-  if (tool.value.id === 'json-format') return defineAsyncComponent(() => import('./tools/JSONFormatter.vue'))
+  const id = tool.value.id
 
-  // Engine-based Tools
-  if (tool.value.id.includes('-down')) return VideoDownloader
-  if (catId === 'pdf') return defineAsyncComponent(() => import('../components/engines/PDFEngine.vue'))
-  if (catId === 'text') return TextEngine
-  if (catId === 'img') return MultimediaEngine
-  if (catId === 'unit') return defineAsyncComponent(() => import('../components/engines/UnitEngine.vue'))
-  if (catId === 'security' || catId === 'dev') return defineAsyncComponent(() => import('../components/engines/SecurityEngine.vue'))
-  if (catId === 'productivity') return defineAsyncComponent(() => import('../components/engines/ProductivityEngine.vue'))
-  if (catId === 'audio') return defineAsyncComponent(() => import('../components/engines/AudioEngine.vue'))
-  if (catId === 'calc' || catId === 'finance') return defineAsyncComponent(() => import('../components/engines/CalcEngine.vue'))
-  if (catId === 'ui') return defineAsyncComponent(() => import('../components/engines/CreativeEngine.vue'))
-  if (catId === 'marketing' || catId === 'social' || tool.value.id === 'yt-thumb') return defineAsyncComponent(() => import('../components/engines/MarketingEngine.vue'))
-  if (catId === 'ai') return defineAsyncComponent(() => import('../components/engines/AIEngine.vue'))
-  if (catId === 'health') return defineAsyncComponent(() => import('../components/engines/HealthEngine.vue'))
-  if (catId === 'sci') return defineAsyncComponent(() => import('../components/engines/ScienceEngine.vue'))
-  if (catId === 'net') return defineAsyncComponent(() => import('../components/engines/NetworkEngine.vue'))
-  if (catId === 'law') return defineAsyncComponent(() => import('../components/engines/BusinessEngine.vue'))
-  if (catId === 'home') return defineAsyncComponent(() => import('../components/engines/HomeEngine.vue'))
-  if (catId === 'writing') return defineAsyncComponent(() => import('../components/engines/WritingEngine.vue'))
-  if (catId === 'fun') return defineAsyncComponent(() => import('../components/engines/GamingEngine.vue'))
-  if (catId === 'finance-pro') return defineAsyncComponent(() => import('../components/engines/FinanceEngine.vue'))
-  if (catId === 'tech-adv') return defineAsyncComponent(() => import('../components/engines/TechEngine.vue'))
-  if (['data', 'seo'].includes(catId)) return TextEngine
-  
+  // High-fidelity standalone tools
+  if (id === 'word-counter') return defineAsyncComponent(() => import('./tools/WordCounter.vue'))
+  if (id === 'json-format')  return defineAsyncComponent(() => import('./tools/JSONFormatter.vue'))
+
+  // Downloaders
+  if (id.includes('-down'))  return VideoDownloader
+
+  // media category
+  if (PDF_TOOLS.has(id))     return defineAsyncComponent(() => import('../components/engines/PDFEngine.vue'))
+  if (AUDIO_TOOLS.has(id))   return defineAsyncComponent(() => import('../components/engines/AudioEngine.vue'))
+  if (VIDEO_TOOLS.has(id))   return MultimediaEngine
+
+  // design category
+  if (IMG_TOOLS.has(id))     return MultimediaEngine
+  if (UI_TOOLS.has(id))      return defineAsyncComponent(() => import('../components/engines/CreativeEngine.vue'))
+
+  // text category
+  if (TEXT_TOOLS.has(id))    return TextEngine
+  if (WRITING_TOOLS.has(id)) return defineAsyncComponent(() => import('../components/engines/WritingEngine.vue'))
+
+  // ai category
+  if (route.params.categoryId === 'ai') return defineAsyncComponent(() => import('../components/engines/AIEngine.vue'))
+
+  // dev category
+  if (NET_TOOLS.has(id))     return defineAsyncComponent(() => import('../components/engines/NetworkEngine.vue'))
+  if (TECH_TOOLS.has(id))    return defineAsyncComponent(() => import('../components/engines/TechEngine.vue'))
+  if (SEC_TOOLS.has(id))     return defineAsyncComponent(() => import('../components/engines/SecurityEngine.vue'))
+
+  // marketing category
+  if (SOCIAL_TOOLS.has(id))  return defineAsyncComponent(() => import('../components/engines/MarketingEngine.vue'))
+  if (MKT_TOOLS.has(id))     return defineAsyncComponent(() => import('../components/engines/MarketingEngine.vue'))
+
+  // finance category
+  if (CALC_TOOLS.has(id))    return defineAsyncComponent(() => import('../components/engines/CalcEngine.vue'))
+  if (FIN_TOOLS.has(id))     return defineAsyncComponent(() => import('../components/engines/FinanceEngine.vue'))
+  if (LAW_TOOLS.has(id))     return defineAsyncComponent(() => import('../components/engines/BusinessEngine.vue'))
+
+  // lifestyle category
+  if (HEALTH_TOOLS.has(id))  return defineAsyncComponent(() => import('../components/engines/HealthEngine.vue'))
+  if (HOME_TOOLS.has(id))    return defineAsyncComponent(() => import('../components/engines/HomeEngine.vue'))
+  if (SCI_TOOLS.has(id))     return defineAsyncComponent(() => import('../components/engines/ScienceEngine.vue'))
+
+  // fun category
+  if (FUN_TOOLS.has(id))     return defineAsyncComponent(() => import('../components/engines/GamingEngine.vue'))
+  if (PROD_TOOLS.has(id))    return defineAsyncComponent(() => import('../components/engines/ProductivityEngine.vue'))
+
   return null
 })
 

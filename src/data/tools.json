@@ -1,268 +1,177 @@
 {
   "categories": [
     {
-      "id": "pdf",
-      "title": "PDF Architekt",
-      "description": "Profesionálna správa PDF dokumentov.",
+      "id": "media",
+      "title": "Médiá & Konverzie",
+      "description": "PDF, audio a video — otváranie, konverzia, strihanie a komprimovanie súborov.",
       "tools": [
         { "id": "pdf-word", "name": "PDF do Word", "description": "Konverzia na editovateľný DOCX." },
         { "id": "pdf-merge", "name": "Zlúčiť PDF", "description": "Spojenie viacerých súborov." },
         { "id": "pdf-split", "name": "Rozdeliť PDF", "description": "Extrakcia vybraných strán." },
-        { "id": "pdf-compress", "name": "Zmenšiť PDF", "description": "Optimalizácia veľkosti súboru." },
-        { "id": "pdf-lock", "name": "Zamknúť PDF", "description": "Zabezpečenie dokumentu heslom." }
+        { "id": "pdf-compress", "name": "Zmenšiť PDF", "description": "Zníž veľkosť bez straty kvality." },
+        { "id": "pdf-lock", "name": "Zamknúť PDF", "description": "Chráň dokument heslom." },
+        { "id": "mp3-wav", "name": "MP3 do WAV", "description": "Bezstratová konverzia formátu." },
+        { "id": "wav-mp3", "name": "WAV do MP3", "description": "Zmenši veľkosť audio súboru." },
+        { "id": "audio-trim", "name": "Orezávač hudby", "description": "Vystrihni ľubovoľnú časť." },
+        { "id": "audio-join", "name": "Spojiť audio", "description": "Zlúč viac súborov do jedného." },
+        { "id": "vol-boost", "name": "Zosilniť zvuk", "description": "Zvýš hlasitosť nahrávky." },
+        { "id": "mp4-avi", "name": "MP4 do AVI", "description": "Konverzia formátu videa." },
+        { "id": "mov-mp4", "name": "MOV do MP4", "description": "iPhone video pre každý player." },
+        { "id": "video-gif", "name": "Video do GIF", "description": "Vytvor animovaný GIF." },
+        { "id": "mp4-mp3", "name": "Video do MP3", "description": "Extrakt zvukovej stopy." },
+        { "id": "video-compress", "name": "Kompresia videa", "description": "Zmenši veľkosť videa." }
       ]
     },
     {
-      "id": "social",
-      "title": "Sociálne siete",
-      "description": "Sťahovanie videí a obsahu z popredných platforiem.",
+      "id": "design",
+      "title": "Foto & Dizajn",
+      "description": "Úprava fotografií, konverzie, farby, gradienty a CSS generátory pre dizajnérov.",
       "tools": [
-        { "id": "yt-down", "name": "YouTube Downloader", "description": "Stiahnite videá z YouTube v HD/4K." },
-        { "id": "tt-down", "name": "TikTok Downloader", "description": "Ukladanie TikTok videí bez vodoznaku." },
-        { "id": "ig-down", "name": "Instagram Downloader", "description": "Stiahnite Reels, Stories a príspevky." },
-        { "id": "fb-down", "name": "Facebook Downloader", "description": "Ukladanie videí a kotúčov z Facebooku." },
-        { "id": "yt-thumb", "name": "YouTube Thumbnail", "description": "Získajte HD náhľadový obrázok z videa." },
-        { "id": "hashtag-gen", "name": "Hashtag Generátor", "description": "Trendy tagy pre váš rast." }
-      ]
-    },
-    {
-      "id": "writing",
-      "title": "Social & Writing Hub",
-      "description": "Nápady a texty pre moderný web.",
-      "tools": [
-        { "id": "ig-caption", "name": "IG Caption Master", "description": "Generovanie popisov pre Instagram posts." },
-        { "id": "reel-ideas", "name": "Reel Idea Generator", "description": "Nápady na videá pre Instagram a TikTok." },
-        { "id": "bio-link", "name": "Bio Link Builder", "description": "Vizuálny náhľad vašej Link-in-Bio stránky." },
-        { "id": "text-expander", "name": "Text Expander", "description": "Skratky pre váš život (Auto-Text)." },
-        { "id": "passive-active", "name": "Menič aktívneho hlasu", "description": "Zlepšite si čitateľnosť textu." }
-      ]
-    },
-    {
-      "id": "ai",
-      "title": "AI Lab",
-      "description": "Umelá inteligencia na dosah ruky.",
-      "tools": [
-        { "id": "ai-prompt-mid", "name": "Midjourney Prompt", "description": "Generátor vizuálnych príkazov." },
-        { "id": "ai-prompt-dalle", "name": "DALL-E Designer", "description": "Tvorba promptov pre AI obrazy." },
-        { "id": "ai-text-smarter", "name": "AI Text Enhancer", "description": "Optimalizácia textu pre LLM." },
-        { "id": "sentiment-ai", "name": "Sentiment AI", "description": "Analýza tónu a emócií textu." }
-      ]
-    },
-    {
-      "id": "marketing",
-      "title": "Marketing & SEO",
-      "description": "Nástroje pre rast vášho biznisu a viditeľnosť.",
-      "tools": [
-        { "id": "qr-gen", "name": "QR Generátor Pro", "description": "Tvorba QR kódov pre URL, Text alebo Wi-Fi." },
-        { "id": "meta-tags", "name": "Meta Tag Generátor", "description": "Optimalizácia webu pre vyhľadávače." },
-        { "id": "sitemap-helper", "name": "Sitemap pomocník", "description": "Rýchla tvorba XML mapy stránok." },
-        { "id": "robots-gen", "name": "Robots.txt Maker", "description": "Inštrukcie pre vyhľadávacie roboty." },
-        { "id": "keyword-research", "name": "Keyword Finder", "description": "Získajte nápady na kľúčové slová." }
-      ]
-    },
-    {
-      "id": "audio",
-      "title": "Audio Lab",
-      "description": "Konverzia, orezávanie a spracovanie zvuku.",
-      "tools": [
-        { "id": "mp3-wav", "name": "MP3 do WAV", "description": "Prevod na bezstratový formát." },
-        { "id": "wav-mp3", "name": "WAV do MP3", "description": "Vysoká kompresia zvuku." },
-        { "id": "audio-trim", "name": "Orezávač hudby", "description": "Vystrihnite si zvonenie pre mobil." },
-        { "id": "audio-join", "name": "Spojiť audio", "description": "Spojte viacero piesní do jednej." },
-        { "id": "vol-boost", "name": "Zosilniť zvuk", "description": "Zvýšenie hlasitosti o 200%." }
-      ]
-    },
-    {
-      "id": "video",
-      "title": "Video Editácia",
-      "description": "Spracovanie a konverzia video súborov.",
-      "tools": [
-        { "id": "mp4-avi", "name": "MP4 do AVI", "description": "Prevod pre staršie zariadenia." },
-        { "id": "mov-mp4", "name": "MOV do MP4", "description": "Prevod iPhone videí na web formát." },
-        { "id": "video-gif", "name": "Video do GIF", "description": "Animované gify z vašich videí." },
-        { "id": "mp4-mp3", "name": "Video do MP3", "description": "Extrakcia hudby z videa." },
-        { "id": "video-compress", "name": "Kompresia videa", "description": "Zmenšenie veľkosti súboru." }
-      ]
-    },
-    {
-      "id": "img",
-      "title": "Foto & Kreatíva",
-      "description": "Vizuálne nástroje pre grafikov a fotografov.",
-      "tools": [
-        { "id": "img-compress", "name": "AI Kompresia", "description": "Zmenšenie veľkosti bez straty kvality." },
-        { "id": "img-upscale", "name": "Zvýšenie rozlíšenia", "description": "AI zväčšenie rozlíšenia fotky." },
-        { "id": "img-remove-bg", "name": "Odstrániť pozadie", "description": "Automatický orez objektu." },
-        { "id": "png-jpg", "name": "PNG na JPG", "description": "Klasická konverzia formátov." },
-        { "id": "img-to-webp", "name": "Prevod na WebP", "description": "Moderná optimalizácia pre web." },
-        { "id": "img-to-base64", "name": "Obrázok do Base64", "description": "Prevod pre CSS/HTML embedding." }
+        { "id": "img-compress", "name": "AI Kompresia", "description": "Zmenší obrázok bez straty kvality." },
+        { "id": "img-upscale", "name": "Zvýšenie rozlíšenia", "description": "AI zväčšenie obrázka." },
+        { "id": "img-remove-bg", "name": "Odstrániť pozadie", "description": "Čisté výrezy na jeden klik." },
+        { "id": "png-jpg", "name": "PNG na JPG", "description": "Rýchla konverzia formátov." },
+        { "id": "img-to-webp", "name": "Prevod na WebP", "description": "Moderný formát pre web." },
+        { "id": "img-to-base64", "name": "Obrázok do Base64", "description": "Enkódovanie pre CSS/HTML." },
+        { "id": "color-conv", "name": "Color Converter", "description": "HEX, RGB, HSL — všetky formáty." },
+        { "id": "gradient-gen", "name": "Stellar Gradients", "description": "Generátor CSS gradientov." },
+        { "id": "glass-gen", "name": "Glassmorphism", "description": "Moderný sklenený efekt." },
+        { "id": "shadow-gen", "name": "Box Shadow Pro", "description": "Vizuálny tvorca tieňov." },
+        { "id": "contrast-checker", "name": "Contrast Ratio", "description": "WCAG prístupnosť farieb." },
+        { "id": "palette-gen", "name": "Palette Magic", "description": "Automatická farebná paleta." }
       ]
     },
     {
       "id": "text",
-      "title": "Textové Lab",
-      "description": "Všetko pre copywriterov a editorov.",
+      "title": "Text & Písanie",
+      "description": "Analýza textu, formátovanie, tvorba obsahu pre sociálne siete a úprava hlasu písania.",
       "tools": [
-        { "id": "word-counter", "name": "Analýza textu", "description": "Počet slov, znakov a čítanosť." },
-        { "id": "case-converter", "name": "Menič písma", "description": "Zmena veľkosti písma (UPPER/lower)." },
-        { "id": "lorem-ipsum", "name": "Slepý text", "description": "Generátor Lorem Ipsum textu." },
-        { "id": "duplicate-remover", "name": "Čistič duplicít", "description": "Odstránenie rovnakých riadkov." },
-        { "id": "list-sorter", "name": "Triedenie zoznamov", "description": "Poriadok v zoznamoch (A-Z)." },
-        { "id": "diff-checker", "name": "Text Diff Pro", "description": "Porovnanie dvoch blokov textu." }
+        { "id": "word-counter", "name": "Analýza textu", "description": "Slová, znaky, čas čítania." },
+        { "id": "case-converter", "name": "Menič písma", "description": "UPPER, lower, Title Case." },
+        { "id": "lorem-ipsum", "name": "Slepý text", "description": "Placeholder text na mieru." },
+        { "id": "duplicate-remover", "name": "Čistič duplicít", "description": "Odstrán duplikáty z textu." },
+        { "id": "list-sorter", "name": "Triedenie zoznamov", "description": "Zoraď a uprav zoznamy." },
+        { "id": "diff-checker", "name": "Text Diff Pro", "description": "Porovnaj dva texty." },
+        { "id": "ig-caption", "name": "Caption Master", "description": "Popisky pre sociálne siete." },
+        { "id": "reel-ideas", "name": "Reel Nápady", "description": "Inšpirácia pre krátke videá." },
+        { "id": "bio-link", "name": "Bio Link Builder", "description": "Popis profilu, ktorý zaujme." },
+        { "id": "text-expander", "name": "Text Expander", "description": "Rozšírenie krátkych skratiek." },
+        { "id": "passive-active", "name": "Aktívny hlas", "description": "Zmeň pasívne vety na aktívne." }
+      ]
+    },
+    {
+      "id": "ai",
+      "title": "AI Nástroje",
+      "description": "Generovanie promptov pre obrázky, vylepšovanie textu pomocou umelej inteligencie.",
+      "tools": [
+        { "id": "ai-prompt-mid", "name": "Midjourney Prompt", "description": "Profesionálne AI prompty." },
+        { "id": "ai-prompt-dalle", "name": "DALL-E Designer", "description": "Tvorba vizuálov cez AI." },
+        { "id": "ai-text-smarter", "name": "AI Text Enhancer", "description": "Vylepši a prepíš akýkoľvek text." },
+        { "id": "sentiment-ai", "name": "Sentiment AI", "description": "Analýza nálady textu." }
       ]
     },
     {
       "id": "dev",
-      "title": "Dev Ops & Kód",
-      "description": "Must-have nástroje pre programátorov.",
+      "title": "Kód & Technológie",
+      "description": "Vývojárske nástroje, sieťová diagnostika, bezpečnosť a serverová konfigurácia.",
       "tools": [
-        { "id": "json-format", "name": "JSON Beauty", "description": "Formátovanie a validácia dát." },
-        { "id": "json-ts", "name": "JSON do TypeScript", "description": "Prevod do rozhrania kódov." },
-        { "id": "url-parser", "name": "URL Rozbor", "description": "Detailná analýza URL adresy." },
-        { "id": "regex-tester", "name": "Regex Validátor", "description": "Testovanie regulárnych výrazov." },
-        { "id": "cron-helper", "name": "CRON Majster", "description": "Tvorba časových úloh." },
-        { "id": "uuid-gen", "name": "UUID Generátor", "description": "Generovanie unikátnych ID (v4)." },
-        { "id": "base64", "name": "Base64 Bridge", "description": "Kódovanie a dekódovanie dát." },
-        { "id": "html-entity", "name": "HTML Enkodér", "description": "Bezpečné kódovanie znakov." }
+        { "id": "json-format", "name": "JSON Beauty", "description": "Formátovanie a validácia JSON." },
+        { "id": "json-ts", "name": "JSON do TypeScript", "description": "Generuj typy z JSON dát." },
+        { "id": "url-parser", "name": "URL Rozbor", "description": "Rozober URL na súčasti." },
+        { "id": "regex-tester", "name": "Regex Validátor", "description": "Testuj regulárne výrazy live." },
+        { "id": "cron-helper", "name": "CRON Majster", "description": "CRON syntax bez memorovania." },
+        { "id": "uuid-gen", "name": "UUID Generátor", "description": "Unikátne identifikátory." },
+        { "id": "base64", "name": "Base64 Bridge", "description": "Kóduj a dekóduj Base64." },
+        { "id": "html-entity", "name": "HTML Enkodér", "description": "HTML entity konvertor." },
+        { "id": "ip-lookup", "name": "IP Adresa Info", "description": "Zisti detaily o IP adrese." },
+        { "id": "dns-lookup", "name": "DNS Rozbor", "description": "Skontroluj DNS záznamy." },
+        { "id": "port-scanner", "name": "Port Scanner", "description": "Otvorenosť portov." },
+        { "id": "subnet-calc", "name": "Subnet Kalkulačka", "description": "Výpočet sieťových masiek." },
+        { "id": "htaccess-gen", "name": ".htaccess Maker", "description": "Apache konfigurácia jednoducho." },
+        { "id": "nginx-config", "name": "Nginx Config Gen", "description": "Nginx server nastavenia." },
+        { "id": "ssh-keygen", "name": "SSH Key Helper", "description": "Generovanie SSH kľúčov." },
+        { "id": "ssl-checker", "name": "SSL Checker", "description": "Overenie SSL certifikátu." },
+        { "id": "pass-gen", "name": "Fortress Password", "description": "Bezpečné náhodné heslá." },
+        { "id": "md5-hash", "name": "MD5 Hash", "description": "Hashuj text cez MD5." },
+        { "id": "sha256-hash", "name": "SHA-256 Secure", "description": "Kryptografický hash SHA-256." }
       ]
     },
     {
-      "id": "home",
-      "title": "Lifestyle & Home",
-      "description": "Praktické nástroje pre domov a každodenný život.",
+      "id": "marketing",
+      "title": "Marketing & Sociálne",
+      "description": "Sťahovanie obsahu, generovanie QR kódov, SEO meta tagy a nástroje pre sociálne siete.",
       "tools": [
-        { "id": "kitchen-conv", "name": "Kitchen Converter", "description": "Prevod hrnčekov, lyžíc a gramov." },
-        { "id": "washing-sym", "name": "Pracie symboly", "description": "Čo znamenajú značky na oblečení." },
-        { "id": "bac-calc", "name": "Alkohol v krvi", "description": "Orientačný výpočet po požití (Demo)." },
-        { "id": "oven-temp", "name": "Teplota rúry", "description": "Prevod medzi Celsius a Fahrenheit (Bake)." },
-        { "id": "bmi-calc", "name": "BMI Kalkulačka", "description": "Index telesnej hmotnosti." }
+        { "id": "yt-down", "name": "YouTube Downloader", "description": "Stiahni video alebo MP3." },
+        { "id": "tt-down", "name": "TikTok Downloader", "description": "TikTok bez vodoznaku." },
+        { "id": "ig-down", "name": "Instagram Downloader", "description": "Fotky a reels offline." },
+        { "id": "fb-down", "name": "Facebook Downloader", "description": "Facebook videá lokálne." },
+        { "id": "yt-thumb", "name": "YouTube Thumbnail", "description": "Stiahni náhľad videa." },
+        { "id": "hashtag-gen", "name": "Hashtag Generátor", "description": "Relevantné hashtagy na mieru." },
+        { "id": "qr-gen", "name": "QR Generátor Pro", "description": "QR kód pre URL, text, kontakt." },
+        { "id": "meta-tags", "name": "Meta Tag Generátor", "description": "OG a SEO meta tagy." },
+        { "id": "sitemap-helper", "name": "Sitemap Pomocník", "description": "XML sitemap pre Google." },
+        { "id": "robots-gen", "name": "Robots.txt Maker", "description": "Riaď crawlerov webu." },
+        { "id": "keyword-research", "name": "Keyword Finder", "description": "Nájdi kľúčové slová." }
       ]
     },
     {
-      "id": "ui",
-      "title": "UI & Dizajn",
-      "description": "CSS generátory a farby pre dizajnérov.",
+      "id": "finance",
+      "title": "Financie & Biznis",
+      "description": "Kalkulačky pre úvery, investície, DPH, ROI a generovanie právnych dokumentov.",
       "tools": [
-        { "id": "color-conv", "name": "Color Converter", "description": "Prevod medzi HEX, RGB a HSL." },
-        { "id": "gradient-gen", "name": "Stellar Gradients", "description": "Generátor farebných prechodov." },
-        { "id": "glass-gen", "name": "Glassmorphism", "description": "Moderný efekt mliečneho skla." },
-        { "id": "shadow-gen", "name": "Box Shadow Pro", "description": "Vizuálna tvorba tieňov." },
-        { "id": "contrast-checker", "name": "Contrast Ratio", "description": "Kontrola čitateľnosti (WCAG)." },
-        { "id": "palette-gen", "name": "Palette Magic", "description": "Okamžité farebné palety pre váš web." }
+        { "id": "loan-calc", "name": "Úverová kalkulačka", "description": "Mesačné splátky a úroky." },
+        { "id": "compound-interest", "name": "Zložené úročenie", "description": "Rast investície v čase." },
+        { "id": "tip-calc", "name": "Tringelty (Tips)", "description": "Spočítaj sprepitné." },
+        { "id": "age-calc", "name": "Veková kalkulačka", "description": "Presný vek a dátum." },
+        { "id": "vat-calc", "name": "DPH Kalkulačka", "description": "Výpočet DPH a cien." },
+        { "id": "percentage-calc", "name": "Percentá", "description": "Rýchle percentuálne výpočty." },
+        { "id": "retirement-calc", "name": "Dôchodkový plánovač", "description": "Plánuj finančnú slobodu." },
+        { "id": "inflation-impact", "name": "Dopad inflácie", "description": "Reálna hodnota peňazí." },
+        { "id": "roi-calc", "name": "ROI Kalkulačka", "description": "Návratnosť investície." },
+        { "id": "margin-calc", "name": "Marža a zisk", "description": "Marža, prirážka, zisk." },
+        { "id": "privacy-gen", "name": "Privacy Policy", "description": "GDPR politika za 30 sekúnd." },
+        { "id": "tos-gen", "name": "Terms of Service", "description": "Podmienky používania webu." },
+        { "id": "invoice-mini", "name": "Faktúra Mini", "description": "Jednoduchá faktúra v PDF." }
       ]
     },
     {
-      "id": "calc",
-      "title": "Kalkulačky",
-      "description": "Presné výpočty pre každý deň.",
+      "id": "lifestyle",
+      "title": "Zdravie & Životný štýl",
+      "description": "Zdravotné kalkulačky, kuchynské konverzie, veda, jednotky a každodenné pomocníky.",
       "tools": [
-        { "id": "loan-calc", "name": "Úverová kalkulačka", "description": "Výpočet splátok a úrokov." },
-        { "id": "compound-interest", "name": "Zložené úročenie", "description": "Rast vašich investícií." },
-        { "id": "tip-calc", "name": "Tringelty (Tips)", "description": "Rozdelenie účtu v reštaurácii." },
-        { "id": "age-calc", "name": "Veková kalkulačka", "description": "Podrobný rozbor vášho veku." },
-        { "id": "vat-calc", "name": "DPH Kalkulačka", "description": "Výpočet základu a bane." },
-        { "id": "percentage-calc", "name": "Percentá", "description": "Rýchle nárasty a podiely." }
-      ]
-    },
-    {
-      "id": "finance-pro",
-      "title": "Finance Pro",
-      "description": "Pokročilé plánovanie vašej budúcnosti.",
-      "tools": [
-        { "id": "retirement-calc", "name": "Dôchodkový plánovač", "description": "Kedy si užijete voľno a peniaze." },
-        { "id": "inflation-impact", "name": "Dopad inflácie", "description": "Sila peňazí v čase (Historický)." },
-        { "id": "roi-calc", "name": "ROI Kalkulačka", "description": "Návratnosť investícií (Profit)." },
-        { "id": "margin-calc", "name": "Marža a zisk", "description": "Zistite svoj skutočný profit." }
-      ]
-    },
-    {
-      "id": "health",
-      "title": "Zdravie & Fit",
-      "description": "Nástroje pre vaše telo a wellness.",
-      "tools": [
-        { "id": "bmr-calc", "name": "BMR (Metabolizmus)", "description": "Základná kalorická potreba." },
-        { "id": "water-goal", "name": "Pitný režim", "description": "Váš denný cieľ hydratácie." },
-        { "id": "ideal-weight", "name": "Ideálna váha", "description": "Výpočet podľa výšky a typu." },
-        { "id": "calorie-burn", "name": "Spaľovanie kalórií", "description": "Aktivita vs Výdaj energie." }
-      ]
-    },
-    {
-      "id": "sci",
-      "title": "Veda & Vzdelávanie",
-      "description": "Smart nástroje pre študentov a vedcov.",
-      "tools": [
-        { "id": "morse-code", "name": "Morseovka", "description": "Prevod textu do bodiek a čiarok." },
-        { "id": "binary-base", "name": "Binárna sústava", "description": "Prevod do binárnej/hexa/oct." },
-        { "id": "periodic-table", "name": "Periodická tabuľka", "description": "Interaktívny zoznam prvkov." },
-        { "id": "unit-pro", "name": "Jednotky Pro", "description": "Tlak, energia a výkon." }
-      ]
-    },
-    {
-      "id": "law",
-      "title": "Právo & Biznis",
-      "description": "Profesionálne generátory dokumentov.",
-      "tools": [
-        { "id": "privacy-gen", "name": "Privacy Policy", "description": "Generátor zásad ochrany údajov." },
-        { "id": "tos-gen", "name": "Terms of Service", "description": "Všeobecné obchodné podmienky." },
-        { "id": "invoice-mini", "name": "Faktúra Mini", "description": "Tvorba jednoduchej faktúry." }
-      ]
-    },
-    {
-      "id": "net",
-      "title": "Network Pro",
-      "description": "Sieťové utility pre profíkov.",
-      "tools": [
-        { "id": "ip-lookup", "name": "IP Adresa Info", "description": "Zistite informácie o vašej IP." },
-        { "id": "dns-lookup", "name": "DNS Rozbor", "description": "Analýza záznamov domény (A/MX)." },
-        { "id": "port-scanner", "name": "Port Scanner", "description": "Kontrola otvorených sieťových brán." },
-        { "id": "subnet-calc", "name": "Subnet Kalkulačka", "description": "IP range a sieťové masky." }
-      ]
-    },
-    {
-      "id": "tech-adv",
-      "title": "Tech Lab Pro",
-      "description": "Konfigurácie a serverové utility.",
-      "tools": [
-        { "id": "htaccess-gen", "name": ".htaccess Maker", "description": "Apache pravidlá pre bezpečnosť." },
-        { "id": "nginx-config", "name": "Nginx Config Gen", "description": "Nginx optimalizácia sekúnd." },
-        { "id": "ssh-keygen", "name": "SSH Key Helper", "description": "Inštrukcie pre bezpečný prístup." },
-        { "id": "ssl-checker", "name": "SSL Checker", "description": "Stav certifikátu certifikátu." }
-      ]
-    },
-    {
-      "id": "security",
-      "title": "Kryptografia",
-      "description": "Zabezpečte svoju digitálnu stopu.",
-      "tools": [
-        { "id": "pass-gen", "name": "Fortress Password", "description": "Vysoko bezpečné heslá." },
-        { "id": "md5-hash", "name": "MD5 Hash", "description": "Kontrolný súčet dát." },
-        { "id": "sha256-hash", "name": "SHA-256 Secure", "description": "Vojenská úroveň šifrovania." }
+        { "id": "bmr-calc", "name": "BMR (Metabolizmus)", "description": "Bazálny metabolický výdaj." },
+        { "id": "water-goal", "name": "Pitný režim", "description": "Denný príjem tekutín." },
+        { "id": "ideal-weight", "name": "Ideálna váha", "description": "Optimálna telesná hmotnosť." },
+        { "id": "calorie-burn", "name": "Spaľovanie kalórií", "description": "Výdaj energie pri športe." },
+        { "id": "kitchen-conv", "name": "Kitchen Converter", "description": "Miery a váhy v kuchyni." },
+        { "id": "washing-sym", "name": "Pracie symboly", "description": "Čo znamenajú symboly." },
+        { "id": "bac-calc", "name": "Alkohol v krvi", "description": "Odhad hladiny alkoholu." },
+        { "id": "oven-temp", "name": "Teplota rúry", "description": "°C, °F, plyn a konvekcia." },
+        { "id": "bmi-calc", "name": "BMI Kalkulačka", "description": "Index telesnej hmotnosti." },
+        { "id": "morse-code", "name": "Morseovka", "description": "Prekladač Morseovej abecedy." },
+        { "id": "binary-base", "name": "Binárna sústava", "description": "Binárne, hex, oktálne čísla." },
+        { "id": "periodic-table", "name": "Periodická tabuľka", "description": "Interaktívne prvky." },
+        { "id": "unit-pro", "name": "Jednotky Pro", "description": "Konverzia fyzikálnych jednotiek." }
       ]
     },
     {
       "id": "fun",
-      "title": "Gaming & Fun",
-      "description": "Zábava pre tvoj voľný čas a náhodu.",
+      "title": "Zábava & Produktivita",
+      "description": "Hry, náhodné generátory, timery, časové pásma a nástroje pre organizáciu dňa.",
       "tools": [
-        { "id": "wheel-fortune", "name": "Kolo Šťastia", "description": "Rozhodnite sa náhodou (Spin)." },
-        { "id": "spin-bottle", "name": "Točenie Fľašou", "description": "Lákavá fľaša pre vašu hru (Spin the Bottle)." },
-        { "id": "multi-dice", "name": "Multi-Kocky", "description": "Hod 1 až 5 kockami naraz s výsledkom." },
-        { "id": "dice-roll", "name": "Digitálna kocka", "description": "Hod 1 k 6 pre tvoje hry." },
-        { "id": "coin-flip", "name": "Hod mincou", "description": "Hlava alebo Orol (Panna/Orol)." },
-        { "id": "score-keeper", "name": "Počítadlo Skóre", "description": "Sledovanie bodov pre 2 až 4 hráčov." },
-        { "id": "rps-game", "name": "Kameň Papier Nožnice", "description": "Rýchla férovka proti náhode." },
-        { "id": "truth-dare", "name": "Pravda alebo Odvaha", "description": "Zábava pre celú partiu." },
-        { "id": "card-picker", "name": "Dávkovač Kariet", "description": "Náhodný výber karty z balíčka." }
-      ]
-    },
-    {
-      "id": "productivity",
-      "title": "Produktivita",
-      "description": "Nástroje pre lepší time management.",
-      "tools": [
-        { "id": "pomodoro", "name": "Pomodoro Timer", "description": "Sústredená práca v blokoch." },
-        { "id": "random-picker", "name": "Žrebovač a náhoda", "description": "Zoznamy, mená a náhodné čísla." },
-        { "id": "time-conv", "name": "Časové pásma", "description": "Prevod medzi svetovými časmi." },
-        { "id": "binary-clock", "name": "Binárne hodiny", "description": "Čas pre skutočných geekov." }
+        { "id": "wheel-fortune", "name": "Kolo Šťastia", "description": "Točiace koleso s voľbami." },
+        { "id": "spin-bottle", "name": "Točenie Fľašou", "description": "Klasická hra pre skupinu." },
+        { "id": "multi-dice", "name": "Multi-Kocky", "description": "Hádzanie viacerých kociek." },
+        { "id": "dice-roll", "name": "Digitálna kocka", "description": "3D animovaná kocka." },
+        { "id": "coin-flip", "name": "Hod mincou", "description": "Orol alebo hlava." },
+        { "id": "score-keeper", "name": "Počítadlo Skóre", "description": "Bodovanie pre viac hráčov." },
+        { "id": "rps-game", "name": "Kameň Papier Nožnice", "description": "Hra proti počítaču." },
+        { "id": "truth-dare", "name": "Pravda alebo Odvaha", "description": "Náhodné otázky a výzvy." },
+        { "id": "card-picker", "name": "Dávkovač Kariet", "description": "Náhodná karta z balíčka." },
+        { "id": "pomodoro", "name": "Pomodoro Timer", "description": "Fokus a prestávky." },
+        { "id": "random-picker", "name": "Žrebovač a náhoda", "description": "Náhodný výber zo zoznamu." },
+        { "id": "time-conv", "name": "Časové pásma", "description": "Porovnaj čas vo svete." },
+        { "id": "binary-clock", "name": "Binárne hodiny", "description": "Čas v binárnom formáte." }
       ]
     }
   ]
