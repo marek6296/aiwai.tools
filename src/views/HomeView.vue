@@ -54,7 +54,7 @@ onMounted(() => {
 
 <style scoped>
 .home-view {
-  padding-top: calc(var(--nav-height) + 2rem);
+  padding-top: calc(var(--nav-height) + 0.75rem);
   padding-bottom: 4rem;
 }
 
