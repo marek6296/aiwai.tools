@@ -67,10 +67,13 @@
                   <img v-if="authStore.avatarUrl" :src="authStore.avatarUrl" :alt="authStore.displayName" />
                   <PhUser v-else :size="14" />
                 </div>
-                <span class="user-name">{{ authStore.displayName }}</span>
-                <PhCaretDown :size="10" class="caret" />
               </button>
               <div class="user-dropdown glass">
+                <div class="user-info-header">
+                  <span class="user-name-full">{{ authStore.displayName }}</span>
+                  <span class="user-status-badge">Premium Účet</span>
+                </div>
+                <div class="dropdown-divider"></div>
                 <button class="dropdown-item clickable logout-item" @click="handleLogout">
                   <PhSignOut :size="14" />
                   Odhlásiť sa
@@ -526,6 +529,31 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
   visibility: visible;
   transform: translateY(0);
   pointer-events: auto;
+}
+
+.user-info-header {
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.user-name-full {
+  font-size: 0.8rem;
+  font-weight: 900;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+.user-status-badge {
+  font-size: 0.55rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+  letter-spacing: 0.05em;
+}
+.dropdown-divider {
+  height: 1px;
+  background: var(--border-dim);
+  margin: 0.25rem 0.5rem;
 }
 
 .logout-item {
