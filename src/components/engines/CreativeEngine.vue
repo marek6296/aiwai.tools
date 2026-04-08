@@ -290,7 +290,7 @@ const copyCSS = () => {
 </script>
 
 <style scoped>
-.creative-engine { width: 100%; max-width: 1000px; padding: 2.5rem; border-radius: var(--radius-lg); }
+.creative-engine { width: 100%; }
 .engine-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; align-items: start; }
 
 .preview-pane {

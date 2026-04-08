@@ -453,11 +453,9 @@ watch(() => props.tool.id, () => {
 <style scoped>
 .security-engine {
   width: 100%;
-  min-height: 100%;
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
-  padding: 1rem;
 }
 
 .main-display {

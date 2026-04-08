@@ -213,7 +213,7 @@ const copy = (t) => { navigator.clipboard.writeText(t) }
 </script>
 
 <style scoped>
-.ai-engine { padding: 4rem; border-radius: 40px; width: 100%; min-height: 100%; }
+.ai-engine { width: 100%; }
 textarea { 
   width: 100%; min-height: 150px; background: var(--bg-deep); border: 1px solid var(--border-dim);
   padding: 1.5rem; color: var(--text-primary); border-radius: 12px; outline: none; font-size: 1.1rem;

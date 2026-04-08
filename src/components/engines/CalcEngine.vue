@@ -276,9 +276,6 @@ watch(() => props.tool.id, () => {
 <style scoped>
 .calc-engine {
   width: 100%;
-  min-height: 100%;
-  padding: 4rem;
-  border-radius: 40px;
 }
 
 .calc-grid {

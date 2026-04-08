@@ -225,8 +225,8 @@ const share = async () => {
 
 .tool-content {
   border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  min-height: 300px;
+  padding: 2.5rem;
+  min-height: 500px;
 }
 
 /* Sidebar */
@@ -293,7 +293,7 @@ const share = async () => {
   }
 
   .tool-content {
-    padding: 1.25rem;
+    padding: 1.25rem 1rem;
   }
 
   .back-link span {

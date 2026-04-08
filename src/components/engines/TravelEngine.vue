@@ -131,7 +131,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.travel-engine { padding: 3rem; border-radius: var(--radius-lg); width: 100%; max-width: 800px; }
+.travel-engine { width: 100%; }
 .conv-grid, .clock-grid, .io-grid { display: grid; gap: 1.5rem; }
 .conv-grid { grid-template-columns: 2fr 1fr 1fr; }
 .clock-grid { grid-template-columns: repeat(2, 1fr); }

@@ -151,7 +151,7 @@ const copy = (t) => { navigator.clipboard.writeText(t) }
 </script>
 
 <style scoped>
-.writing-engine { padding: 4rem; border-radius: 40px; width: 100%; min-height: 100%; }
+.writing-engine { width: 100%; }
 input, textarea { 
   width: 100%; background: var(--bg-deep); border: 1px solid var(--border-dim);
   padding: 1.25rem; color: var(--text-primary); border-radius: 12px; outline: none; font-size: 1.1rem;
