@@ -82,6 +82,24 @@
       </div>
     </div>
 
+    <!-- AI Result panel (background removal / upscale) -->
+    <div v-if="resultImageUrl" class="ai-result-panel reveal">
+      <div class="ai-result-header">
+        <span>✅ AI Výsledok</span>
+        <a :href="resultImageUrl" download="aiwai-result.png" class="btn-download clickable">
+          Stiahnuť obrázok
+        </a>
+      </div>
+      <div class="ai-result-image">
+        <img :src="resultImageUrl" alt="AI Result" />
+      </div>
+    </div>
+
+    <!-- AI Error panel -->
+    <div v-if="aiError" class="ai-error-panel reveal">
+      <span>⚠️ {{ aiError }}</span>
+    </div>
+
     <canvas ref="canvasRef" hidden></canvas>
   </div>
 </template>
@@ -113,6 +131,8 @@ const aspectRatio = ref(1)
 const processing = ref(false)
 const val1 = ref('')
 const val2 = ref('')
+const resultImageUrl = ref('')
+const aiError = ref('')
 
 const drawMeme = () => {
   // Real-time canvas drawing for preview if possible, 
@@ -159,6 +179,8 @@ const reset = () => {
   file.value = null
   if (previewUrl.value) URL.revokeObjectURL(previewUrl.value)
   previewUrl.value = ''
+  resultImageUrl.value = ''
+  aiError.value = ''
 }
 
 onUnmounted(() => {
@@ -172,23 +194,27 @@ const processImage = async () => {
   
   // AI-powered tools (Upscale, BG removal)
   if (props.tool.id === 'img-upscale' || props.tool.id === 'img-remove-bg') {
+    resultImageUrl.value = ''
+    aiError.value = ''
     try {
       const task = props.tool.id === 'img-upscale' ? 'UPSCALE' : 'REMOVE_BACKGROUND'
       const reader = new FileReader()
       reader.onloadend = async () => {
-        const result = await gemini.processImage(reader.result, task)
-        // Since we don't have a direct "output image" from standard Gemini Vision yet (it only returns text),
-        // we simulate the success here. In a real production environment, 
-        // one would use specialized Vertex AI or specialized Imagen APIs for the actual image return.
-        // For now, we show the AI perception as a professional feedback.
-        alert(`AI Vision Report: ${result}`)
-        processing.value = false
+        try {
+          const result = await gemini.processImage(reader.result, task)
+          resultImageUrl.value = result
+        } catch(err) {
+          aiError.value = err.message
+        } finally {
+          processing.value = false
+        }
       }
       reader.readAsDataURL(file.value)
-      return 
+      return
     } catch(err) {
-      alert(`AI Error: ${err.message}`)
-      processing.value = false; return
+      aiError.value = err.message
+      processing.value = false
+      return
     }
   }
 
@@ -446,5 +472,66 @@ const processImage = async () => {
 
 @media (max-width: 1024px) {
   .processor-view { grid-template-columns: 1fr; }
+}
+
+/* AI Result Panel */
+.ai-result-panel {
+  margin-top: 2.5rem;
+  border: 1px dashed var(--accent-gold);
+  border-radius: var(--radius-md);
+  background: rgba(197, 169, 106, 0.04);
+  overflow: hidden;
+}
+
+.ai-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-dim);
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+.btn-download {
+  padding: 0.5rem 1.25rem;
+  background: var(--accent-gold);
+  color: var(--bg-deep);
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-block;
+  transition: opacity 0.2s;
+}
+.btn-download:hover { opacity: 0.85; }
+
+.ai-result-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-deep);
+  min-height: 200px;
+  padding: 1.5rem;
+}
+.ai-result-image img {
+  max-width: 100%;
+  max-height: 500px;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+/* AI Error Panel */
+.ai-error-panel {
+  margin-top: 1.5rem;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 71, 87, 0.08);
+  border: 1px solid rgba(255, 71, 87, 0.3);
+  border-radius: var(--radius-sm);
+  color: #ff7675;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 </style>

@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   if (!apiKey) return res.status(500).json({ error: 'Gemini key not configured' })
 
   try {
-    const { model = 'gemini-1.5-flash', action = 'generateContent', ...body } = req.body
+    const { model = 'gemini-2.0-flash', action = 'generateContent', ...body } = req.body
     
     // Determine the API endpoint based on model type
     let apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:${action}?key=${apiKey}`
