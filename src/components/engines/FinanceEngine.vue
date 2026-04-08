@@ -125,7 +125,7 @@ const inflationVal = computed(() => {
 </script>
 
 <style scoped>
-.finance-engine { padding: 3rem; border-radius: var(--radius-lg); width: 100%; max-width: 800px; }
+.finance-engine { padding: 4rem; border-radius: 40px; width: 100%; min-height: 100%; }
 .input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
 .field { display: flex; flex-direction: column; gap: 0.5rem; }
 label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }

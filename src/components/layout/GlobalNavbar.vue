@@ -174,15 +174,16 @@ const searchQuery = ref('')
 
 const categories = [
   { name: 'Domov', href: '/', internal: true },
+  { name: 'AI Nástroje', href: '/ai/ai-chat', internal: true },
   { name: 'Médiá & Konverzie', href: '/media/pdf-word', internal: true },
-  { name: 'Foto & Dizajn', href: '/design/img-compress', internal: true },
+  { name: 'Foto & Dizajn', href: '/design/favicon-gen', internal: true },
   { name: 'Text & Písanie', href: '/text/word-counter', internal: true },
-  { name: 'AI Nástroje', href: '/ai/ai-prompt-mid', internal: true },
   { name: 'Kód & Technológie', href: '/dev/json-format', internal: true },
-  { name: 'Marketing & Sociálne', href: '/marketing/yt-down', internal: true },
+  { name: '🎓 Škola & Veda', href: '/edu/citation-gen', internal: true },
+  { name: '✈️ Cestovanie', href: '/travel/currency-conv', internal: true },
+  { name: 'Marketing & Sociálne', href: '/marketing/utm-builder', internal: true },
   { name: 'Financie & Biznis', href: '/finance/loan-calc', internal: true },
-  { name: 'Zdravie & Životný štýl', href: '/lifestyle/bmr-calc', internal: true },
-  { name: 'Zábava & Produktivita', href: '/fun/wheel-fortune', internal: true },
+  { name: 'Zábava & Fun', href: '/fun/wheel-fortune', internal: true },
   { name: '—', href: '#', internal: true },
   { name: 'AIWai.news', href: 'https://aiwai.news', internal: false },
   { name: 'AIWai.app', href: 'https://aiwai.app', internal: false },
@@ -219,28 +220,22 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 <style scoped>
 /* ── Base ── */
 .navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 1000;
+  left: 0;
   width: 100%;
-  border-bottom: 1px solid transparent;
-  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
-}
-
-.navbar.scrolled {
-  background: rgba(5, 5, 8, 0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-color: var(--border-dim);
-  box-shadow: 0 4px 40px rgba(0,0,0,0.4);
+  height: 56px;
+  z-index: 1000;
+  border-bottom: 1px solid var(--border-dim);
+  background: var(--bg-deep);
 }
 
 .navbar-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 1.1rem;
-  padding-bottom: 1.1rem;
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
   position: relative;
 }
 
@@ -389,10 +384,9 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 .logo-aiwai {
   font-family: var(--font-syne);
   font-weight: 900;
-  font-size: clamp(1.6rem, 3vw, 2.8rem);
-  letter-spacing: -0.03em;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
   line-height: 1;
-  /* Gradient text */
   background: linear-gradient(135deg, var(--text-primary) 0%, rgba(247,244,238,0.5) 50%, var(--text-primary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -401,7 +395,7 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 }
 
 .logo-img {
-  height: clamp(2rem, 3.5vw, 3rem);
+  height: 1.85rem;
   width: auto;
   object-fit: contain;
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -413,11 +407,11 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll))
 
 .logo-tools {
   font-weight: 900;
-  font-size: clamp(0.55rem, 0.9vw, 0.75rem);
+  font-size: 0.55rem;
   color: var(--accent-gold);
   text-transform: uppercase;
-  letter-spacing: 0.28em;
-  margin-top: 4px;
+  letter-spacing: 0.2em;
+  margin-top: 2px;
 }
 
 /* ── RIGHT ── */

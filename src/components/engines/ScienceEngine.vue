@@ -46,6 +46,55 @@
         </div>
       </div>
 
+      <!-- Citation Generator -->
+      <div v-if="tool.id === 'citation-gen'" class="sci-tool">
+        <div class="input-grid">
+          <div class="field">
+            <label>Názov diela / Autor</label>
+            <input type="text" v-model="input" placeholder="napr. Meno Autora: Názov Knihy (2024)" />
+          </div>
+          <div class="field">
+            <label>Štýl citácie</label>
+            <select v-model="unitType" @change="generateCitation">
+              <option value="apa">APA Štýl</option>
+              <option value="mla">MLA Štýl</option>
+              <option value="iso">ISO 690</option>
+            </select>
+          </div>
+        </div>
+        <div class="result-box glass mt-2" v-if="output">
+          <div class="res-label">Formátovaná citácia:</div>
+          <p class="citation-text">{{ output }}</p>
+          <button class="btn-copy clickable" @click="copy(output)"><PhCopy :size="18" /></button>
+        </div>
+      </div>
+
+      <!-- GPA Calculator -->
+      <div v-else-if="tool.id === 'gpa-calc'" class="sci-tool">
+        <div class="grades-manager">
+          <div class="input-row">
+            <input type="number" v-model="val1" placeholder="Známka (1.0 - 5.0)" />
+            <input type="number" v-model="val2" placeholder="Kredity" />
+            <button class="btn-add clickable" @click="addGrade">Pridať</button>
+          </div>
+          <div class="gpa-display mt-2 glass p-2 text-center" v-if="gpaScore">
+            <div class="label">Váš priemer (weighted GPA):</div>
+            <div class="gpa-val gold">{{ gpaScore }}</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Equation Solver -->
+      <div v-else-if="tool.id === 'equation-solver'" class="sci-tool">
+        <label>Zadajte rovnicu (napr. 2x + 5 = 15)</label>
+        <input type="text" v-model="input" placeholder="2x + 5 = 15" class="glass-input big" />
+        <button class="btn-primary mt-1 clickable" @click="solveEquation">Vypočítať</button>
+        <div class="result-box glass mt-2" v-if="output">
+          <div class="res-label">Riešenie:</div>
+          <div class="solution-val">{{ output }}</div>
+        </div>
+      </div>
+
       <!-- Professional Units -->
       <div v-else-if="tool.id === 'unit-pro'" class="sci-tool">
         <div class="base-grid">
@@ -67,12 +116,34 @@
           <div class="res-value gold">{{ output }}</div>
         </div>
       </div>
+
+      <!-- Flashcards -->
+      <div v-else-if="tool.id === 'flashcard-maker' || tool.id === 'flashcard-quiz'" class="sci-tool">
+        <div class="flashcard-container" @click="flipCard">
+          <div class="f-card" :class="{ flipped: cardFlipped }">
+            <div class="f-side front">
+              <span class="f-label">OTÁZKA</span>
+              <p>{{ currentCard.q }}</p>
+              <div class="tap-hint gold">Kliknite pre otočenie</div>
+            </div>
+            <div class="f-side back">
+              <span class="f-label">ODPOVEĎ</span>
+              <p>{{ currentCard.a }}</p>
+              <div class="tap-hint gold">Kliknite pre návrat</div>
+            </div>
+          </div>
+        </div>
+        <div class="f-controls mt-2">
+          <button class="btn-sub clickable" @click.stop="prevCard">PREDCHÁDZAJÚCA</button>
+          <button class="btn-primary clickable" @click.stop="nextCard">ĎALŠIA</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, reactive } from 'vue'
 import { PhCopy, PhFlask } from '@phosphor-icons/vue'
 
 const props = defineProps({
@@ -86,7 +157,74 @@ const bin = ref('0')
 const hex = ref('0')
 const elementData = ref(null)
 const val1 = ref(0)
-const unitType = ref('pressure')
+const val2 = ref(0)
+const grades = ref([])
+const unitType = ref('apa')
+
+// Flashcards
+const cardFlipped = ref(false)
+const currentIdx = ref(0)
+const cards = reactive([
+  { q: 'Čo je to fotosyntéza?', a: 'Proces, pri ktorom rastliny premieňajú svetlo na energiu.' },
+  { q: 'Ktorá planéta je najbližšie k Slnku?', a: 'Merkúr' },
+  { q: 'Kto objavil teóriu relativity?', a: 'Albert Einstein' },
+  { q: 'Čo je najväčší orgán ľudského tela?', a: 'Koža' }
+])
+const currentCard = computed(() => cards[currentIdx.value])
+
+const flipCard = () => { cardFlipped.value = !cardFlipped.value }
+const nextCard = () => {
+  cardFlipped.value = false
+  setTimeout(() => { currentIdx.value = (currentIdx.value + 1) % cards.length }, 150)
+}
+const prevCard = () => {
+  cardFlipped.value = false
+  setTimeout(() => { currentIdx.value = (currentIdx.value - 1 + cards.length) % cards.length }, 150)
+}
+
+const gpaScore = computed(() => {
+  if (grades.value.length === 0) return null
+  const total = grades.value.reduce((acc, g) => acc + (g.grade * g.credits), 0)
+  const credits = grades.value.reduce((acc, g) => acc + g.credits, 0)
+  return (total / credits).toFixed(2)
+})
+
+const addGrade = () => {
+  if (!val1.value || !val2.value) return
+  grades.value.push({ grade: parseFloat(val1.value), credits: parseInt(val2.value) })
+  val1.value = 0
+  val2.value = 0
+}
+
+const generateCitation = () => {
+  if (!input.value) return
+  const parts = input.value.split(':')
+  const author = parts[0]?.trim() || 'Neznámy Autor'
+  const title = parts[1]?.trim() || 'Neznáme Dielo'
+  
+  if (unitType.value === 'apa') output.value = `${author}. (2024). ${title}. Vydavateľstvo.`
+  else if (unitType.value === 'mla') output.value = `${author}. "${title}." AIWai Press, 2024.`
+  else output.value = `${author.toUpperCase()}. ${title}. 2024. Available at: AIWai tools.`
+}
+
+const solveEquation = () => {
+  // Very basic linear solver (ax + b = c)
+  try {
+    const eq = input.value.replace(/\s/g, '')
+    const [left, right] = eq.split('=')
+    const c = parseFloat(right)
+    
+    // Pattern: ax+b
+    const match = left.match(/(-?\d*)x([+-]\d+)?/)
+    if (!match) { output.value = 'Neplatný formát (skúste napr. 2x + 5 = 15)'; return }
+    
+    const a = parseFloat(match[1] || '1')
+    const b = parseFloat(match[2] || '0')
+    
+    const x = (c - b) / a
+    output.value = `x = ${x}`
+  } catch (e) { output.value = 'Chyba pri výpočte' }
+}
 
 const encodeMorse = () => {
   const dictionary = {
@@ -139,7 +277,7 @@ const copy = (t) => { navigator.clipboard.writeText(t) }
 </script>
 
 <style scoped>
-.science-engine { padding: 3rem; border-radius: var(--radius-lg); width: 100%; max-width: 800px; }
+.science-engine { padding: 4rem; border-radius: 40px; width: 100%; min-height: 100%; }
 textarea, input[type="text"], input[type="number"], select { 
   width: 100%; background: var(--bg-deep); border: 1px solid var(--border-dim);
   padding: 1rem; color: var(--text-primary); border-radius: 8px; outline: none;
@@ -158,5 +296,66 @@ textarea, input[type="text"], input[type="number"], select {
 .results-panel { padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; }
 .res-value { font-size: 1.5rem; font-weight: 800; }
 .gold { color: var(--accent-gold); }
-@media (max-width: 768px) { .base-grid { grid-template-columns: 1fr; } }
+
+/* Education Specific */
+.input-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.field { display: flex; flex-direction: column; gap: 0.5rem; }
+.field label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+
+.grades-manager .input-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 1rem; align-items: flex-end; }
+.btn-add { background: var(--accent-gold); color: var(--bg-deep); padding: 0.8rem 1.5rem; border: none; border-radius: 8px; font-weight: 800; }
+
+.gpa-val { font-size: 3.5rem; font-weight: 900; }
+.citation-text { font-style: italic; color: var(--text-primary); margin: 1rem 0; line-height: 1.6; }
+
+.solution-val { font-size: 2.5rem; font-weight: 900; color: var(--accent-gold); text-align: center; padding: 1rem; }
+.glass-input.big { font-size: 1.5rem; text-align: center; font-weight: 700; }
+.btn-primary { 
+  width: 100%; background: var(--accent-gold); color: var(--bg-deep); padding: 1rem; 
+  border-radius: 12px; font-weight: 900; text-transform: uppercase; 
+}
+
+
+/* Flashcards Styles */
+.flashcard-container { perspective: 1000px; width: 100%; height: 320px; cursor: pointer; }
+.f-card { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+.f-card.flipped { transform: rotateY(180deg); }
+.f-side { 
+  position: absolute; width: 100%; height: 100%; 
+  backface-visibility: hidden; 
+  -webkit-backface-visibility: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; 
+  padding: 3rem; border-radius: 24px; border: 1px solid var(--border-soft);
+  background: var(--bg-glass);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+}
+.front { transform: translateZ(1px); }
+.back { transform: rotateY(180deg) translateZ(1px); background: rgba(197, 169, 106, 0.08); border-color: var(--accent-gold); }
+.f-label { font-size: 0.65rem; color: var(--accent-gold); letter-spacing: 2px; font-weight: 800; position: absolute; top: 20px; }
+.f-side p { font-size: 1.5rem; font-weight: 700; text-align: center; color: var(--text-primary); }
+.tap-hint { position: absolute; bottom: 20px; font-size: 0.7rem; font-weight: 800; opacity: 0.6; text-transform: uppercase; }
+.f-controls { 
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  gap: 2rem; 
+  margin-top: 5rem;
+  width: 100%;
+}
+.btn-sub {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-soft);
+  color: var(--text-muted);
+  padding: 1.25rem;
+  border-radius: 16px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  transition: all 0.3s;
+}
+.btn-sub:hover {
+  background: rgba(255,255,255,0.06);
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) { .base-grid { grid-template-columns: 1fr; } .input-grid { grid-template-columns: 1fr; } }
 </style>

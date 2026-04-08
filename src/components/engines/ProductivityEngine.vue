@@ -265,11 +265,12 @@ watch(() => props.tool.id, () => {
 <style scoped>
 .productivity-engine {
   width: 100%;
-  max-width: 800px;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3rem;
+  padding: 1rem;
 }
 
 /* Pomodoro Styles */

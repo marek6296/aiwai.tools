@@ -145,7 +145,71 @@
       </div>
     </div>
 
-    <!-- Hashes -->
+    <!-- JWT Decoder -->
+    <div v-else-if="tool.id === 'jwt-decoder'" class="dev-tool">
+      <div class="io-panel full">
+        <label>Encoded JWT Token</label>
+        <textarea v-model="input" @input="decodeJWT" class="glass" placeholder="eyJhbGciOiJIUzI1Ni..."></textarea>
+      </div>
+      <div v-if="jwtData" class="jwt-results mt-2">
+        <div class="jwt-part glass">
+          <label>Header</label>
+          <pre><code>{{ jwtData.header }}</code></pre>
+        </div>
+        <div class="jwt-part glass">
+          <label>Payload</label>
+          <pre><code>{{ jwtData.payload }}</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Markdown to HTML -->
+    <div v-else-if="tool.id === 'markdown-html'" class="bridge-tool">
+      <div class="io-grid">
+        <div class="io-panel">
+          <label>Markdown Vstup</label>
+          <textarea v-model="input" class="glass" placeholder="# Nadpis..."></textarea>
+        </div>
+        <div class="io-panel">
+          <label>HTML Náhľad</label>
+          <div class="html-preview glass" v-html="markdownPreview"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Unix Timestamp -->
+    <div v-else-if="tool.id === 'unix-timestamp'" class="dev-tool">
+      <div class="timestamp-grid glass">
+        <div class="time-block">
+          <label>Unix Timestamp</label>
+          <input type="number" v-model="val1" @input="fromUnix" class="glass-input" />
+        </div>
+        <div class="time-block">
+          <label>Ľudský Dátum & Čas</label>
+          <input type="text" v-model="input" @input="fromDate" class="glass-input" />
+        </div>
+      </div>
+      <button class="btn-gen-new clickable" @click="setCurrentTime">Nastaviť aktuálny čas</button>
+    </div>
+
+    <!-- Minifiers -->
+    <div v-else-if="['css-minify', 'js-minify'].includes(tool.id)" class="bridge-tool">
+      <div class="io-grid">
+        <div class="io-panel">
+          <label>Pôvodný Kód</label>
+          <textarea v-model="input" class="glass" placeholder="/* Vložte kód... */"></textarea>
+        </div>
+        <div class="io-panel">
+          <label>Minifikovaný Kód</label>
+          <textarea v-model="output" readonly class="glass"></textarea>
+        </div>
+      </div>
+      <div class="bridge-actions">
+        <button class="btn-gen-new clickable" @click="minifyCode">Minifikovať Kód</button>
+      </div>
+    </div>
+
+    <!-- Hashes & Rest -->
     <div v-else-if="tool.id.includes('-hash') || tool.id === 'md5-hash'" class="hash-tool">
       <div class="io-panel full">
         <label>Vstupné dáta pre {{ tool.name }}</label>
@@ -188,6 +252,67 @@ const strengthColor = ref('#ff4d4d')
 const options = reactive({ upper: true, lower: true, numbers: true, symbols: true })
 const isDecoding = ref(false)
 const uuidVal = ref(crypto.randomUUID())
+const jwtData = ref(null)
+
+const markdownPreview = computed(() => {
+  if (!input.value) return ''
+  return input.value
+    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+    .replace(/^\* (.*$)/gim, '<li>$1</li>')
+    .replace(/\*\*(.*)\*\*/gim, '<b>$1</b>')
+    .replace(/\*(.*)\*/gim, '<i>$1</i>')
+    .replace(/\n/gim, '<br>')
+})
+
+const decodeJWT = () => {
+  try {
+    const parts = input.value.split('.')
+    if (parts.length !== 3) { jwtData.value = null; return }
+    jwtData.value = {
+      header: JSON.stringify(JSON.parse(atob(parts[0])), null, 2),
+      payload: JSON.stringify(JSON.parse(atob(parts[1])), null, 2)
+    }
+  } catch (e) { jwtData.value = null }
+}
+
+const fromUnix = () => {
+  try {
+    const d = new Date(parseInt(val1.value) * 1000)
+    input.value = d.toLocaleString()
+  } catch (e) {}
+}
+
+const fromDate = () => {
+  try {
+    const d = new Date(input.value)
+    val1.value = Math.floor(d.getTime() / 1000)
+  } catch (e) {}
+}
+
+const setCurrentTime = () => {
+  const d = new Date()
+  val1.value = Math.floor(d.getTime() / 1000)
+  input.value = d.toLocaleString()
+}
+
+const minifyCode = () => {
+  if (!input.value) return
+  if (props.tool.id === 'css-minify') {
+    output.value = input.value
+      .replace(/\/\*[\s\S]*?\*\/|[\r\n\t]+/g, '')
+      .replace(/ {2,}/g, ' ')
+      .replace(/ ([{:;}]) /g, '$1')
+      .replace(/[:;] /g, (m) => m.trim())
+  } else {
+    // Basic JS minify
+    output.value = input.value
+      .replace(/\/\/.*/g, '')
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+  }
+}
 
 const parseURL = () => {
   try {
@@ -328,10 +453,11 @@ watch(() => props.tool.id, () => {
 <style scoped>
 .security-engine {
   width: 100%;
-  max-width: 800px;
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
+  padding: 1rem;
 }
 
 .main-display {
@@ -586,4 +712,23 @@ watch(() => props.tool.id, () => {
   flex-direction: column;
   gap: 0.8rem;
 }
+
+/* JWT Specific */
+.jwt-results { display: flex; flex-direction: column; gap: 1.5rem; }
+.jwt-part { padding: 1.5rem; border: 1px solid var(--border-dim); }
+.jwt-part label { font-size: 0.75rem; color: var(--accent-gold); font-weight: 800; text-transform: uppercase; margin-bottom: 0.75rem; display: block; }
+.jwt-part pre { margin: 0; overflow-x: auto; color: var(--text-primary); font-size: 0.9rem; }
+
+/* Markdown Preview */
+.html-preview { 
+  background: white; color: #333; padding: 2rem; border-radius: var(--radius-md); 
+  height: 250px; overflow-y: auto; font-family: sans-serif; 
+}
+.html-preview h1 { font-size: 1.5rem; margin-bottom: 1rem; }
+.html-preview h2 { font-size: 1.25rem; margin-bottom: 0.75rem; }
+
+/* Timestamp Grid */
+.timestamp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; padding: 2.5rem; margin-bottom: 1.5rem; }
+.time-block { display: flex; flex-direction: column; gap: 0.75rem; }
+.time-block label { font-size: 0.75rem; color: var(--text-muted); font-weight: 800; text-transform: uppercase; }
 </style>

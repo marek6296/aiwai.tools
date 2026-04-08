@@ -50,17 +50,43 @@
         </div>
       </div>
 
-      <!-- Text Enhancer -->
-      <div v-else-if="tool.id === 'ai-text-smarter'" class="text-enhancer">
+      <!-- Text Enhancer & Universal Writing Engine -->
+      <div v-else-if="tool.id === 'ai-text-smarter' || tool.id.includes('ai-')" class="text-enhancer">
         <div class="io-grid">
-          <textarea v-model="input" placeholder="Vložte text, ktorý chcete upraviť pre AI..."></textarea>
-          <div class="actions">
-            <button class="btn-main clickable" @click="processText('context')">Pridať Kontext</button>
-            <button class="btn-main clickable" @click="processText('simplify')">Zjednodušiť</button>
-            <button class="btn-main clickable" @click="processText('bullets')">Na body</button>
+          <div class="input-header">
+            <span class="label">{{ inputLabel }}</span>
+          </div>
+          <textarea v-model="input" :placeholder="inputPlaceholder"></textarea>
+          
+          <div class="ai-actions">
+            <!-- Specific buttons for smarter text -->
+            <template v-if="tool.id === 'ai-text-smarter'">
+              <button class="btn-main clickable" @click="processText('context')">Pridať Kontext</button>
+              <button class="btn-main clickable" @click="processText('simplify')">Zjednodušiť</button>
+              <button class="btn-main clickable" @click="processText('bullets')">Na body</button>
+            </template>
+            <!-- Universal AI Generate button -->
+            <button v-else class="btn-primary clickable" @click="generateAI" :disabled="isGenerating">
+              <PhSparkle v-if="!isGenerating" :size="18" weight="fill" />
+              <div v-else class="spinner-mini"></div>
+              {{ isGenerating ? 'Generujem...' : 'Generovať cez AI' }}
+            </button>
           </div>
         </div>
-        <textarea v-model="output" readonly class="glass mt-1" placeholder="Výsledok..."></textarea>
+
+        <div class="result-box glass mt-1 reveal" v-if="output || generatedImageUrl">
+          <div class="result-header">
+            <span>AI Výsledok:</span>
+            <div class="header-actions">
+               <button v-if="output" class="copy-small clickable" @click="copy(output)">Kopírovať Text</button>
+               <a v-if="generatedImageUrl" :href="generatedImageUrl" download="aiwai-image.png" class="copy-small clickable">Stiahnuť Obrázok</a>
+            </div>
+          </div>
+          <div v-if="generatedImageUrl" class="image-preview-wrap">
+             <img :src="generatedImageUrl" alt="AI Generated" class="generated-img" />
+          </div>
+          <div v-if="output" class="output-content">{{ output }}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -81,6 +107,61 @@ const style = ref('photorealistic')
 const sentimentText = ref('Neutrálne')
 const sentimentEmoji = ref('😐')
 const sentimentColor = ref('#ccc')
+const isGenerating = ref(false)
+
+const inputLabel = computed(() => {
+  const labels = {
+    'ai-chat': 'Povedzte niečo chatbotovi...',
+    'ai-blog-gen': 'Téma blogu alebo kľúčové slová',
+    'ai-email-writer': 'Komu a o čom má byť email?',
+    'ai-product-desc': 'Názov produktu a jeho vlastnosti',
+    'ai-translator': 'Text na preklad',
+    'ai-grammar': 'Text na kontrolu a štylizáciu',
+    'ai-cover-letter': 'Pozícia a vaše skúsenosti',
+    'ai-resume-gen': 'Základné údaje pre CV',
+    'ai-ad-copy': 'Čo promujeme? (Produkt/Služba)',
+    'ai-prompt-lib': 'Hľadať v knižnici promptov...',
+    'ai-text-smarter': 'Obsah pre AI vylepšenie'
+  }
+  return labels[props.tool.id] || 'Vaše zadanie'
+})
+
+const inputPlaceholder = computed(() => {
+  const placeholders = {
+    'ai-blog-gen': 'napr: Budúcnosť AI v roku 2026...',
+    'ai-email-writer': 'napr: Žiadosť o dovolenku pre šéfa, formálne...',
+    'ai-product-desc': 'napr: Bezdrôtové slúchadlá s potlačením hluku...',
+    'ai-cover-letter': 'napr: Junior Frontend Developer v tech firme...',
+  }
+  return placeholders[props.tool.id] || 'Sem napíšte vaše zadanie...'
+})
+
+import { gemini } from '../../lib/ai'
+
+const isImageTool = computed(() => props.tool.id === 'ai-prompt-mid')
+const generatedImageUrl = ref('')
+
+const generateAI = async () => {
+  if (!input.value) return
+  isGenerating.value = true
+  output.value = ''
+  generatedImageUrl.value = ''
+  
+  try {
+    if (isImageTool.value) {
+      // Image Generation
+      generatedImageUrl.value = await gemini.generateImage(input.value, ar.value)
+    } else {
+      // Text Generation
+      const prompt = `Task: ${props.tool.name}\nDescription: ${props.tool.description}\nUser INPUT: "${input.value}"\n\nPlease fulfill this task precisely and in the language of the input.`
+      output.value = await gemini.generateText(prompt)
+    }
+  } catch (err) {
+    output.value = `CHYBA AI: ${err.message}. Skúste to znova neskôr.`
+  } finally {
+    isGenerating.value = false
+  }
+}
 
 const enhancePrompt = () => {
   if (!input.value) { output.value = ''; return }
@@ -132,7 +213,7 @@ const copy = (t) => { navigator.clipboard.writeText(t) }
 </script>
 
 <style scoped>
-.ai-engine { padding: 3rem; border-radius: var(--radius-lg); width: 100%; max-width: 800px; }
+.ai-engine { padding: 4rem; border-radius: 40px; width: 100%; min-height: 100%; }
 textarea { 
   width: 100%; min-height: 150px; background: var(--bg-deep); border: 1px solid var(--border-dim);
   padding: 1.5rem; color: var(--text-primary); border-radius: 12px; outline: none; font-size: 1.1rem;
@@ -142,18 +223,41 @@ textarea {
 .setting label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
 select { background: var(--bg-deep); border: 1px solid var(--border-dim); padding: 0.8rem; border-radius: 8px; color: var(--text-primary); }
 
-.result-area { margin-top: 1.5rem; padding: 2rem; border: 1px solid var(--accent-gold); position: relative; }
-.result-header { display: flex; justify-content: space-between; margin-bottom: 1rem; color: var(--text-muted); font-size: 0.9rem; }
-.prompt-text { font-family: monospace; font-size: 1.2rem; color: var(--accent-gold); line-height: 1.6; }
+.input-header { margin-bottom: 0.75rem; }
+.label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em; }
 
-.sentiment-meter { margin-top: 2rem; padding: 2rem; text-align: center; }
-.emoji-display { font-size: 4rem; margin-bottom: 1rem; }
-.sentiment-label { font-size: 1.5rem; font-weight: 800; text-transform: uppercase; }
+.ai-actions { margin-top: 1.5rem; display: flex; justify-content: flex-end; }
 
-.io-grid { display: flex; flex-direction: column; gap: 1rem; }
-.actions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-.btn-main { background: var(--bg-soft); border: 1px solid var(--border-dim); padding: 1rem; border-radius: 8px; color: var(--text-primary); font-weight: 700; }
-.btn-main:hover { border-color: var(--accent-gold); color: var(--accent-gold); }
+.btn-primary { 
+  background: var(--accent-gold); color: var(--bg-deep); padding: 1rem 2rem; border-radius: 12px;
+  font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; gap: 0.75rem;
+  transition: all 0.3s ease;
+}
+.btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(197, 169, 106, 0.3); }
+.btn-primary:disabled { opacity: 0.6; cursor: wait; }
+
+.result-box { margin-top: 2rem; padding: 2rem; border: 1px dashed var(--accent-gold); border-radius: 16px; background: rgba(197, 169, 106, 0.03); }
+.copy-small { font-size: 0.7rem; font-weight: 800; color: var(--accent-gold); text-transform: uppercase; background: rgba(197, 169, 106, 0.1); padding: 0.4rem 0.8rem; border-radius: 6px; }
+
+.output-content { margin-top: 1rem; color: var(--text-primary); line-height: 1.8; white-space: pre-wrap; font-size: 1.05rem; }
+
+.image-preview-wrap {
+  margin-top: 1.5rem; border-radius: 12px; overflow: hidden;
+  background: var(--bg-deep); border: 1px solid var(--border-dim);
+  display: flex; align-items: center; justify-content: center;
+  min-height: 300px;
+}
+.generated-img { max-width: 100%; height: auto; display: block; }
+.header-actions { display: flex; gap: 0.5rem; }
+.copy-small { text-decoration: none; display: inline-block; }
+
+.spinner-mini {
+  width: 18px; height: 18px; border: 2px solid var(--bg-deep); border-top-color: transparent; border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
 .mt-1 { margin-top: 1.5rem; }
 .copy-btn { background: var(--accent-gold); color: var(--bg-deep); border: none; width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
 </style>

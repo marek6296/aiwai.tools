@@ -83,7 +83,7 @@ const copy = (t) => { navigator.clipboard.writeText(t) }
 </script>
 
 <style scoped>
-.business-engine { padding: 3rem; border-radius: var(--radius-lg); width: 100%; max-width: 800px; }
+.business-engine { padding: 4rem; border-radius: 40px; width: 100%; min-height: 100%; }
 input { 
   width: 100%; background: var(--bg-deep); border: 1px solid var(--border-dim);
   padding: 1rem; color: var(--text-primary); border-radius: 8px; outline: none; font-size: 1.1rem;

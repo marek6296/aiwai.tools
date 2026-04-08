@@ -4,7 +4,12 @@
       <!-- Preview Pane -->
       <div class="preview-pane">
         <div class="preview-object" :style="previewStyle">
-          <span>AIWai</span>
+          <template v-if="tool.id !== 'flex-grid-gen'">
+            <span>AIWai</span>
+          </template>
+          <template v-else>
+            <div v-for="i in 3" :key="i" class="mini-box glass"></div>
+          </template>
         </div>
       </div>
 
@@ -93,6 +98,38 @@
           </div>
         </div>
 
+        <!-- Border Radius Viz -->
+        <div v-if="tool.id === 'border-radius-viz'" class="options">
+          <label>Top Left: {{ brTL }}px</label>
+          <input type="range" v-model="brTL" min="0" max="200" />
+          <label>Top Right: {{ brTR }}px</label>
+          <input type="range" v-model="brTR" min="0" max="200" />
+          <label>Bottom Right: {{ brBR }}px</label>
+          <input type="range" v-model="brBR" min="0" max="200" />
+          <label>Bottom Left: {{ brBL }}px</label>
+          <input type="range" v-model="brBL" min="0" max="200" />
+        </div>
+
+        <!-- Flex/Grid Gen -->
+        <div v-if="tool.id === 'flex-grid-gen'" class="options">
+          <label>Typ rozloženia</label>
+          <select v-model="layoutType">
+            <option value="flex">Flexbox</option>
+            <option value="grid">CSS Grid</option>
+          </select>
+          <label>Direction / Columns</label>
+          <input v-if="layoutType === 'flex'" type="text" v-model="flexDir" placeholder="row, column" />
+          <input v-else type="text" v-model="gridCols" placeholder="repeat(3, 1fr)" />
+          <label>Medzera (Gap): {{ layoutGap }}px</label>
+          <input type="range" v-model="layoutGap" min="0" max="100" />
+          <label>Zarovnanie</label>
+          <select v-model="justify">
+            <option value="center">Center</option>
+            <option value="space-between">Space Between</option>
+            <option value="flex-start">Flex Start</option>
+          </select>
+        </div>
+
         <!-- Palette Generator -->
         <div v-if="tool.id === 'palette-gen'" class="options palette-tool">
           <label>Základná farba</label>
@@ -131,6 +168,18 @@ const blur = ref(16)
 const shadowX = ref(10)
 const shadowY = ref(10)
 const shadowBlur = ref(20)
+
+// Radius & Layout
+const brTL = ref(24)
+const brTR = ref(24)
+const brBR = ref(24)
+const brBL = ref(24)
+
+const layoutType = ref('flex')
+const flexDir = ref('row')
+const gridCols = ref('repeat(3, 1fr)')
+const layoutGap = ref(20)
+const justify = ref('center')
 
 // Standard Color Conversions
 const getRGB = (hex) => {
@@ -209,6 +258,17 @@ const previewStyle = computed(() => {
   if (props.tool.id === 'color-conv') return { background: color1.value }
   if (props.tool.id === 'contrast-checker') return { background: color2.value, color: color1.value }
   if (props.tool.id === 'palette-gen') return { background: `linear-gradient(135deg, ${color1.value}, ${palette.value[4] || '#333'})` }
+  if (props.tool.id === 'border-radius-viz') return { background: color1.value, borderRadius: `${brTL.value}px ${brTR.value}px ${brBR.value}px ${brBL.value}px` }
+  if (props.tool.id === 'flex-grid-gen') return { 
+    display: layoutType.value,
+    flexDirection: flexDir.value,
+    gridTemplateColumns: gridCols.value,
+    gap: `${layoutGap.value}px`,
+    justifyContent: justify.value,
+    alignItems: 'center',
+    padding: '20px',
+    background: 'rgba(255,255,255,0.05)'
+  }
   return {}
 })
 
@@ -321,6 +381,10 @@ code { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.9r
 .palette-swatch { aspect-ratio: 1; border-radius: 12px; display: flex; align-items: flex-end; justify-content: center; padding: 0.5rem; transition: transform 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
 .palette-swatch:hover { transform: scale(1.08); }
 .palette-swatch span { font-size: 0.6rem; font-weight: 800; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+
+/* Layout Tool Specific */
+.mini-box { width: 60px; height: 60px; border: 2px solid var(--accent-gold); border-radius: 8px; }
+select, .options input[type="text"] { width: 100%; background: var(--bg-deep); border: 1px solid var(--border-dim); padding: 0.8rem; border-radius: 8px; color: var(--text-primary); outline: none; }
 
 @media (max-width: 900px) { .engine-layout { grid-template-columns: 1fr; } }
 </style>

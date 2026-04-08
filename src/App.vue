@@ -20,7 +20,7 @@ onMounted(() => {
 <template>
   <div class="app-container">
     <Atmosphere />
-    <GlobalNavbar />
+    <GlobalNavbar v-if="!$route.meta?.hideNav" />
     <SearchOverlay />
     
     <main class="page-content">

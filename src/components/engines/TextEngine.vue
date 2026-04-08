@@ -241,6 +241,8 @@ watch(() => props.tool.id, (newId) => {
   flex-direction: column;
   gap: 1.5rem;
   width: 100%;
+  min-height: 100%;
+  padding: 1rem;
 }
 
 .editor-container {

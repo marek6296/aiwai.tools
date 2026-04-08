@@ -96,13 +96,9 @@ const share = async () => {
 
 /* ── Top bar ── */
 .tool-topbar {
-  position: sticky;
-  top: var(--nav-height);
-  z-index: 10;
-  background: rgba(5,5,8,0.85);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border-bottom: 1px solid var(--border-dim);
+  position: relative;
+  background: var(--bg-deep);
+  border-bottom: 1px solid var(--border-soft);
 }
 
 .tool-topbar-inner {
@@ -110,28 +106,28 @@ const share = async () => {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding-top: 0.9rem;
-  padding-bottom: 0.9rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 /* Tool identity */
 .tool-identity {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  gap: 0.75rem;
   min-width: 0;
 }
 
 .tool-icon {
-  width: 52px;
-  height: 52px;
+  width: 38px;
+  height: 38px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--bg-soft);
-  border: 1px solid var(--border-soft);
-  border-radius: 14px;
+  border: 1px solid var(--border-dim);
+  border-radius: 10px;
   color: var(--accent-gold);
 }
 
@@ -141,19 +137,19 @@ const share = async () => {
 
 .tool-name {
   font-family: var(--font-heading);
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 800;
   color: var(--text-primary);
-  line-height: 1.2;
+  line-height: 1.1;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .tool-desc {
-  font-size: 0.78rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
-  margin-top: 0.15rem;
+  margin-top: 0.1rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -215,8 +211,8 @@ const share = async () => {
   display: grid;
   grid-template-columns: 1fr 280px;
   gap: 1.5rem;
-  padding-top: 1.5rem;
-  padding-bottom: 3rem;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
   align-items: start;
 }
 
@@ -227,14 +223,14 @@ const share = async () => {
 
 .tool-content {
   border-radius: var(--radius-lg);
-  padding: 2rem;
+  padding: 1.5rem;
   min-height: 300px;
 }
 
 /* Sidebar */
 .tool-sidebar {
   position: sticky;
-  top: calc(var(--nav-height) + 62px);
+  top: calc(var(--nav-height) + 54px + 1rem); /* 1rem for margin */
 }
 
 .sidebar-title {

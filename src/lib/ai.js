@@ -1,123 +1,92 @@
 /**
- * AI Helper — volá server-side proxy endpointy.
- * API kľúče nikdy neopustia server.
+ * AI Service for Gemini
+ * Communicates with the local serverless proxy /api/gemini
  */
 
-// ─── OpenAI ────────────────────────────────────────────────────────────────
+export const gemini = {
+  /**
+   * Generates text content using Gemini 1.5 Flash
+   */
+  async generateText(prompt, model = 'gemini-1.5-flash') {
+    try {
+      const res = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model,
+          action: 'generateContent',
+          contents: [{ parts: [{ text: prompt }] }]
+        })
+      })
+      const data = await res.json()
+      if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+        return data.candidates[0].content.parts[0].text
+      }
+      throw new Error(data.error?.message || 'Empty response from AI')
+    } catch (err) {
+      console.error('Gemini Generate Text Error:', err)
+      throw err
+    }
+  },
 
-/**
- * Zavolá OpenAI Chat Completions cez server proxy.
- * @param {Array}  messages  - pole { role, content } správ
- * @param {Object} options   - model, temperature, max_tokens, ...
- * @returns {Promise<string>} - odpoveď modelu
- */
-export async function openaiChat(messages, options = {}) {
-  const res = await fetch('/api/openai', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: options.model || 'gpt-4o-mini',
-      messages,
-      temperature: options.temperature ?? 0.7,
-      max_tokens: options.max_tokens ?? 1024,
-      ...options,
-    }),
-  })
+  /**
+   * Generates images using Imagen 3
+   */
+  async generateImage(prompt, aspectRatio = '1:1') {
+    try {
+      const res = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'imagen-3.0-generate-001',
+          prompt,
+          aspect_ratio: aspectRatio,
+          number_of_images: 1
+        })
+      })
+      const data = await res.json()
+      if (data.predictions && data.predictions[0]?.bytesBase64Encoded) {
+        return `data:image/png;base64,${data.predictions[0].bytesBase64Encoded}`
+      }
+      // Fallback check for different API response formats
+      if (data.candidates && data.candidates[0]?.output_file) {
+         return data.candidates[0].output_file
+      }
+      throw new Error(data.error?.message || 'Image generation not supported by this API key yet.')
+    } catch (err) {
+      console.error('Gemini Image Gen Error:', err)
+      throw err
+    }
+  },
 
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}))
-    throw new Error(err?.error?.message || `OpenAI chyba: ${res.status}`)
+  /**
+   * Universal vision task (Background removal, Upscale via instructions)
+   */
+  async processImage(base64Image, task = 'REMOVE_BACKGROUND') {
+    const instructions = {
+      REMOVE_BACKGROUND: "Keep the main subject and make the background completely transparent or pure white. Describe the mask.",
+      UPSCALE: "Increase resolution, enhance details and remove compression artifacts from this image."
+    }
+
+    try {
+      const res = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'gemini-1.5-flash',
+          contents: [{
+            parts: [
+              { text: instructions[task] || task },
+              { inline_data: { mime_type: "image/png", data: base64Image.split(',')[1] } }
+            ]
+          }]
+        })
+      })
+      const data = await res.json()
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || 'No description returned'
+    } catch (err) {
+      console.error('Vision Task Error:', err)
+      throw err
+    }
   }
-
-  const data = await res.json()
-  return data.choices?.[0]?.message?.content ?? ''
-}
-
-/**
- * Zavolá OpenAI Images (DALL·E) cez server proxy.
- * @param {string} prompt
- * @param {Object} options - model, size, n, quality
- * @returns {Promise<string[]>} - pole URL obrázkov
- */
-export async function openaiImage(prompt, options = {}) {
-  const res = await fetch('/api/openai?endpoint=images/generations', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: options.model || 'dall-e-3',
-      prompt,
-      n: options.n || 1,
-      size: options.size || '1024x1024',
-      quality: options.quality || 'standard',
-    }),
-  })
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}))
-    throw new Error(err?.error?.message || `DALL·E chyba: ${res.status}`)
-  }
-
-  const data = await res.json()
-  return data.data?.map((d) => d.url) ?? []
-}
-
-// ─── Gemini ────────────────────────────────────────────────────────────────
-
-/**
- * Zavolá Google Gemini cez server proxy.
- * @param {string} prompt   - jednoduchý text prompt
- * @param {Object} options  - model, temperature, maxOutputTokens
- * @returns {Promise<string>} - odpoveď modelu
- */
-export async function geminiChat(prompt, options = {}) {
-  const res = await fetch('/api/gemini', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: options.model || 'gemini-2.0-flash',
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: {
-        temperature: options.temperature ?? 0.7,
-        maxOutputTokens: options.maxOutputTokens ?? 1024,
-      },
-    }),
-  })
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}))
-    throw new Error(err?.error?.message || `Gemini chyba: ${res.status}`)
-  }
-
-  const data = await res.json()
-  return data.candidates?.[0]?.content?.parts?.[0]?.text ?? ''
-}
-
-/**
- * Zavolá Gemini s plnou kontrolou nad contents poľom (multi-turn, multimodal).
- * @param {Array}  contents  - Gemini contents formát
- * @param {Object} options
- * @returns {Promise<string>}
- */
-export async function geminiRaw(contents, options = {}) {
-  const res = await fetch('/api/gemini', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: options.model || 'gemini-2.0-flash',
-      contents,
-      generationConfig: {
-        temperature: options.temperature ?? 0.7,
-        maxOutputTokens: options.maxOutputTokens ?? 2048,
-        ...options.generationConfig,
-      },
-    }),
-  })
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}))
-    throw new Error(err?.error?.message || `Gemini chyba: ${res.status}`)
-  }
-
-  const data = await res.json()
-  return data.candidates?.[0]?.content?.parts?.[0]?.text ?? ''
 }

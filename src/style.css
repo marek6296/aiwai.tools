@@ -32,8 +32,7 @@
   --font-serif: 'Playfair Display', serif;
   --font-syne: 'Syne', var(--font-heading);
   
-  /* Layout */
-  --nav-height: 72px;
+  --nav-height: 56px;
   --max-width: 1440px;
 }
 

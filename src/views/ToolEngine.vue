@@ -41,7 +41,7 @@ import MultimediaEngine from '../components/engines/MultimediaEngine.vue'
 import {
   PhHourglass, PhFilePdf, PhImage, PhCode, PhMegaphone,
   PhTextT, PhCalculator, PhRobot, PhFirstAid, PhGameController,
-  PhTrendUp
+  PhTrendUp, PhAirplaneTilt, PhGraduationCap, PhWifiHigh
 } from '@phosphor-icons/vue'
 
 const route = useRoute()
@@ -62,6 +62,9 @@ const toolIcon = computed(() => {
     finance:   PhTrendUp,
     lifestyle: PhFirstAid,
     fun:       PhGameController,
+    travel:    PhAirplaneTilt,
+    edu:       PhGraduationCap,
+    internet:  PhWifiHigh,
   }
   return icons[route.params.categoryId] || PhTextT
 })
@@ -76,19 +79,20 @@ const IMG_TOOLS     = new Set(['img-compress','img-upscale','img-remove-bg','png
 const UI_TOOLS      = new Set(['color-conv','gradient-gen','glass-gen','shadow-gen','contrast-checker','palette-gen'])
 const TEXT_TOOLS    = new Set(['word-counter','case-converter','lorem-ipsum','duplicate-remover','list-sorter','diff-checker'])
 const WRITING_TOOLS = new Set(['ig-caption','reel-ideas','bio-link','text-expander','passive-active'])
-const NET_TOOLS     = new Set(['ip-lookup','dns-lookup','port-scanner','subnet-calc'])
+const NET_TOOLS     = new Set(['ip-lookup','dns-lookup','port-scanner','subnet-calc','speed-test'])
 const TECH_TOOLS    = new Set(['htaccess-gen','nginx-config','ssh-keygen','ssl-checker'])
-const SEC_TOOLS     = new Set(['pass-gen','md5-hash','sha256-hash','uuid-gen','base64','html-entity','json-ts','url-parser','regex-tester','cron-helper','json-format'])
-const SOCIAL_TOOLS  = new Set(['yt-down','tt-down','ig-down','fb-down','yt-thumb','hashtag-gen'])
-const MKT_TOOLS     = new Set(['qr-gen','meta-tags','sitemap-helper','robots-gen','keyword-research'])
 const CALC_TOOLS    = new Set(['loan-calc','compound-interest','tip-calc','age-calc','vat-calc','percentage-calc'])
 const FIN_TOOLS     = new Set(['retirement-calc','inflation-impact','roi-calc','margin-calc'])
 const LAW_TOOLS     = new Set(['privacy-gen','tos-gen','invoice-mini'])
 const HEALTH_TOOLS  = new Set(['bmr-calc','water-goal','ideal-weight','calorie-burn','bmi-calc'])
 const HOME_TOOLS    = new Set(['kitchen-conv','washing-sym','bac-calc','oven-temp'])
 const SCI_TOOLS     = new Set(['morse-code','binary-base','periodic-table','unit-pro'])
-const FUN_TOOLS     = new Set(['wheel-fortune','spin-bottle','multi-dice','dice-roll','coin-flip','score-keeper','rps-game','truth-dare','card-picker'])
-const PROD_TOOLS    = new Set(['pomodoro','random-picker','time-conv','binary-clock'])
+const TRAVEL_TOOLS  = new Set(['currency-conv','world-clock','flight-dist','foreign-phrases','travel-budget','baggage-size'])
+const EDU_TOOLS     = new Set(['citation-gen','gpa-calc','flashcard-maker','equation-solver','flashcard-quiz'])
+const FUN_TOOLS     = new Set(['wheel-fortune','spin-bottle','multi-dice','dice-roll','coin-flip','score-keeper','rps-game','truth-dare','card-picker','random-picker'])
+const PROD_TOOLS    = new Set(['pomodoro','time-conv','binary-clock'])
+const MKT_TOOLS     = new Set(['utm-builder','og-preview','li-post-gen','email-subject-test','qr-gen','meta-tags','sitemap-helper','robots-gen','keyword-research'])
+const SEC_TOOLS     = new Set(['pass-gen','md5-hash','sha256-hash','uuid-gen','base64','html-entity','json-ts','url-parser','regex-tester','cron-helper','json-format','jwt-decoder','markdown-html','unix-timestamp','css-minify','js-minify','graphql-play'])
 
 const engineComponent = computed(() => {
   if (!tool.value) return null
@@ -123,7 +127,6 @@ const engineComponent = computed(() => {
   if (SEC_TOOLS.has(id))     return defineAsyncComponent(() => import('../components/engines/SecurityEngine.vue'))
 
   // marketing category
-  if (SOCIAL_TOOLS.has(id))  return defineAsyncComponent(() => import('../components/engines/MarketingEngine.vue'))
   if (MKT_TOOLS.has(id))     return defineAsyncComponent(() => import('../components/engines/MarketingEngine.vue'))
 
   // finance category
@@ -135,6 +138,13 @@ const engineComponent = computed(() => {
   if (HEALTH_TOOLS.has(id))  return defineAsyncComponent(() => import('../components/engines/HealthEngine.vue'))
   if (HOME_TOOLS.has(id))    return defineAsyncComponent(() => import('../components/engines/HomeEngine.vue'))
   if (SCI_TOOLS.has(id))     return defineAsyncComponent(() => import('../components/engines/ScienceEngine.vue'))
+
+  // travel & edu categories
+  if (TRAVEL_TOOLS.has(id))  return defineAsyncComponent(() => import('../components/engines/TravelEngine.vue'))
+  if (EDU_TOOLS.has(id))     return defineAsyncComponent(() => import('../components/engines/ScienceEngine.vue'))
+
+  // internet & web category
+  if (route.params.categoryId === 'internet') return defineAsyncComponent(() => import('../components/engines/NetworkEngine.vue'))
 
   // fun category
   if (FUN_TOOLS.has(id))     return defineAsyncComponent(() => import('../components/engines/GamingEngine.vue'))
@@ -161,10 +171,18 @@ const relatedTools = computed(() => {
 
 <style scoped>
 .engine-container {
-  min-height: 400px;
+  min-height: 800px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  padding: 2rem 0;
+  width: 100%;
+}
+
+.engine-container > :first-child {
+  width: 1000px;
+  min-height: 700px;
+  flex-shrink: 0;
 }
 
 .coming-soon {

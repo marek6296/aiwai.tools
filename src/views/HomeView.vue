@@ -24,7 +24,8 @@ import BentoCard from '../components/ui/BentoCard.vue'
 import { store } from '../store/toolStore'
 import {
   PhFilePdf, PhImage, PhTextT, PhCode,
-  PhMegaphone, PhTrendUp, PhFirstAid, PhGameController, PhRobot
+  PhMegaphone, PhTrendUp, PhFirstAid, PhGameController, PhRobot,
+  PhAirplaneTilt, PhGraduationCap
 } from '@phosphor-icons/vue'
 
 const categories = computed(() => store.categories || [])
@@ -40,6 +41,8 @@ const getIconForCategory = (id) => {
     finance:   PhTrendUp,
     lifestyle: PhFirstAid,
     fun:       PhGameController,
+    travel:    PhAirplaneTilt,
+    edu:       PhGraduationCap,
   }
   return icons[id] || PhTextT
 }
@@ -54,18 +57,18 @@ onMounted(() => {
 
 <style scoped>
 .home-view {
-  padding-top: calc(var(--nav-height) + 0.75rem);
-  padding-bottom: 4rem;
+  padding-top: calc(var(--nav-height) + 2.5rem);
+  padding-bottom: 6rem;
 }
 
 .categories {
-  /* no extra spacing */
+  padding: 0 2rem;
 }
 
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
 
 @media (max-width: 1200px) {

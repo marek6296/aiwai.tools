@@ -170,25 +170,80 @@
       </div>
     </div>
 
-    <!-- KEYWORD FINDER -->
-    <div v-if="tool.id === 'keyword-research'" class="marketing-tool glass reveal">
+    <!-- UTM BUILDER -->
+    <div v-if="tool.id === 'utm-builder'" class="marketing-tool glass reveal">
       <div class="meta-header">
-        <h3>Keyword Finder</h3>
-        <p>Objavte súvisiace kľúčové slová pre vaše SEO.</p>
+        <h3>UTM Tag Builder</h3>
+        <p>Vytvorte trackovacie linky pre vaše kampane.</p>
       </div>
-      <div class="input-panel">
-        <div class="input-group">
-          <label>Hlavné slovo</label>
-          <div class="search-box">
-            <input type="text" v-model="marketingInput" placeholder="napr. umelá inteligencia" @keyup.enter="findKeywords" />
-            <button class="btn-search clickable" @click="findKeywords"><PhMagnifyingGlass :size="20" /></button>
+      <div class="utm-grid">
+        <div class="field">
+          <label>Cieľová URL</label>
+          <input type="text" v-model="val1" @input="buildUTM" placeholder="https://vásweb.sk" />
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Zdroj (Source)</label>
+            <input type="text" v-model="val2" @input="buildUTM" placeholder="facebook, google, newsletter" />
+          </div>
+          <div class="field">
+            <label>Médium</label>
+            <input type="text" v-model="val3" @input="buildUTM" placeholder="cpc, social, email" />
           </div>
         </div>
-        <div v-if="keywordResult.length" class="results-list reveal">
-          <div v-for="kw in keywordResult" :key="kw" class="kw-item">
-            <span>{{ kw }}</span>
-            <PhPlus :size="16" class="clickable gold" @click="marketingInput = kw; findKeywords()" />
+        <div class="field">
+          <label>Názov kampane</label>
+          <input type="text" v-model="val4" @input="buildUTM" placeholder="spring_sale" />
+        </div>
+      </div>
+      <div class="meta-output mt-2" v-if="output">
+        <div class="output-header">
+          <span>Final URL:</span>
+          <button class="btn-copy clickable" @click="copy(output)">Kopírovať</button>
+        </div>
+        <div class="code-block">{{ output }}</div>
+      </div>
+    </div>
+
+    <!-- OG PREVIEWER -->
+    <div v-if="tool.id === 'og-preview'" class="marketing-tool glass reveal">
+      <div class="meta-header">
+        <h3>Social Previewer</h3>
+        <p>Simulujte náhľad vášho webu na sociálnych sieťach.</p>
+      </div>
+      <div class="og-preview-box">
+        <div class="og-input">
+          <label>URL Obrázka (OG Image)</label>
+          <input type="text" v-model="val1" placeholder="https://vásweb.sk/og-image.jpg" />
+          <label class="mt-1">Titulok príspevku</label>
+          <input type="text" v-model="val2" placeholder="Názov vašej stránky" />
+        </div>
+        <div class="og-card-demo glass mt-2">
+          <img :src="val1 || 'https://via.placeholder.com/1200x630/222/cea96a?text=AIWai+Preview'" class="og-img" />
+          <div class="og-content">
+            <div class="og-site">VÁŠWEB.SK</div>
+            <div class="og-title">{{ val2 || 'Tu bude váš titulok' }}</div>
+            <div class="og-desc">Toto je ukážka popisu, ktorý sa zobrazí na sociálnych sieťach...</div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EMAIL SUBJECT TESTER -->
+    <div v-if="tool.id === 'email-subject-test'" class="marketing-tool glass reveal">
+      <div class="meta-header">
+        <h3>Email Subject Tester</h3>
+        <p>Získajte skóre otvárateľnosti pre váš predmet emailu.</p>
+      </div>
+      <div class="input-panel">
+        <label>Zadajte predmet emailu</label>
+        <input type="text" v-model="input" @input="testEmailSubject" placeholder="Akciove zlavy len dnes!" />
+        
+        <div v-if="subjectScore" class="score-display mt-2 text-center">
+          <div class="score-circle" :style="{ borderColor: subjectColor }">
+            <span :style="{ color: subjectColor }">{{ subjectScore }}%</span>
+          </div>
+          <p class="score-label">{{ subjectFeedback }}</p>
         </div>
       </div>
     </div>
@@ -206,6 +261,43 @@ const props = defineProps({
 const marketingInput = ref('')
 const hashtagResult = ref(null)
 const keywordResult = ref([])
+const input = ref('')
+const output = ref('')
+const val1 = ref('')
+const val2 = ref('')
+const val3 = ref('')
+const val4 = ref('')
+
+const subjectScore = ref(0)
+const subjectFeedback = ref('')
+const subjectColor = ref('')
+
+const buildUTM = () => {
+  if (!val1.value) { output.value = ''; return }
+  let base = val1.value
+  const params = []
+  if (val2.value) params.push(`utm_source=${encodeURIComponent(val2.value)}`)
+  if (val3.value) params.push(`utm_medium=${encodeURIComponent(val3.value)}`)
+  if (val4.value) params.push(`utm_campaign=${encodeURIComponent(val4.value)}`)
+  
+  const separator = base.includes('?') ? '&' : '?'
+  output.value = params.length ? `${base}${separator}${params.join('&')}` : base
+}
+
+const testEmailSubject = () => {
+  if (!input.value) { subjectScore.value = 0; return }
+  let score = 50
+  const txt = input.value.toLowerCase()
+  if (txt.length > 20 && txt.length < 60) score += 20
+  if (txt.includes('!') || txt.includes('?')) score += 10
+  if (txt.length > 100) score -= 30
+  if (txt.includes('zadarmo') || txt.includes('výhra')) score -= 15 // Spam filter feel
+  
+  subjectScore.value = Math.min(100, Math.max(0, score))
+  if (score > 70) { subjectFeedback.value = 'Skvelý predmet!'; subjectColor.value = '#2ed573' }
+  else if (score > 40) { subjectFeedback.value = 'Priemerný, skúste vylepšiť.'; subjectColor.value = '#ffa502' }
+  else { subjectFeedback.value = 'Príliš dlhý alebo pôsobí ako spam.'; subjectColor.value = '#ff4757' }
+}
 
 const generateHashtags = () => {
   if (!marketingInput.value) { hashtagResult.value = null; return }
@@ -482,4 +574,28 @@ input[type="color"] { width: 100%; height: 40px; border: none; background: trans
   align-items: center;
 }
 .mt-1 { margin-top: 1rem; }
+
+/* UTM Builder Styles */
+.utm-grid { display: flex; flex-direction: column; gap: 1.5rem; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+/* OG Preview Styles */
+.og-card-demo { 
+  background: #f0f2f5; color: #1c1e21; border-radius: 0; overflow: hidden; 
+  border: 1px solid #ddd; max-width: 500px; margin: auto;
+}
+.og-img { width: 100%; aspect-ratio: 1.91 / 1; object-fit: cover; }
+.og-content { padding: 12px; border-top: 1px solid #ddd; }
+.og-site { font-size: 12px; color: #65676b; text-transform: uppercase; }
+.og-title { font-size: 16px; font-weight: 600; margin: 4px 0; color: #1c1e21; }
+.og-desc { font-size: 14px; color: #65676b; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* Score Display Styles */
+.score-circle {
+  width: 120px; height: 120px; border-radius: 50%; border: 8px solid;
+  display: flex; align-items: center; justify-content: center;
+  margin: 1.5rem auto; font-size: 2rem; font-weight: 900;
+  transition: all 0.5s ease;
+}
+.score-label { font-weight: 700; font-size: 1.1rem; }
 </style>
