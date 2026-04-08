@@ -5,12 +5,12 @@
       <!-- LEFT: Menu dropdown + Search (desktop) -->
       <div class="nav-left">
         <!-- Dropdown Menu -->
-        <div class="dropdown-wrap" :class="{ 'open': menuOpen }" @mouseenter="menuOpen = true" @mouseleave="menuOpen = false">
-          <button class="menu-trigger clickable" @click="menuOpen = !menuOpen">
+        <div class="dropdown-wrap" :class="{ 'open': menuOpen }" @mouseenter="toggleMenu(true)" @mouseleave="toggleMenu(false)">
+          <button class="menu-trigger clickable" @click="toggleMenu(!menuOpen)">
             Menu
             <PhCaretDown :size="12" class="caret" />
           </button>
-          <div class="dropdown-panel glass">
+          <div class="dropdown-panel glass" @mouseenter="toggleMenu(true)">
             <template v-for="cat in categories" :key="cat.name">
               <router-link
                 v-if="cat.internal"
@@ -61,14 +61,14 @@
         <!-- Auth: Desktop -->
         <div class="auth-area desktop-only">
           <template v-if="authStore.isLoggedIn">
-            <div class="user-menu-wrap" :class="{ 'open': userMenuOpen }" @mouseenter="userMenuOpen = true" @mouseleave="userMenuOpen = false">
-              <button class="user-trigger clickable">
+            <div class="user-menu-wrap" :class="{ 'open': userMenuOpen }" @mouseenter="toggleUserMenu(true)" @mouseleave="toggleUserMenu(false)">
+              <button class="user-trigger clickable" @click="toggleUserMenu(!userMenuOpen)">
                 <div class="user-avatar">
                   <img v-if="authStore.avatarUrl" :src="authStore.avatarUrl" :alt="authStore.displayName" />
                   <PhUser v-else :size="14" />
                 </div>
               </button>
-              <div class="user-dropdown glass">
+              <div class="user-dropdown glass" @mouseenter="toggleUserMenu(true)">
                 <div class="user-info-header">
                   <span class="user-name-full">{{ authStore.displayName }}</span>
                   <span class="user-status-badge">Premium Účet</span>
@@ -173,6 +173,31 @@ const isScrolled = ref(false)
 const mobileOpen = ref(false)
 const menuOpen = ref(false)
 const userMenuOpen = ref(false)
+let menuTimer = null
+let userTimer = null
+
+const toggleMenu = (open) => {
+  if (open) {
+    clearTimeout(menuTimer)
+    menuOpen.value = true
+  } else {
+    menuTimer = setTimeout(() => {
+      menuOpen.value = false
+    }, 250) // 250ms transition buffer
+  }
+}
+
+const toggleUserMenu = (open) => {
+  if (open) {
+    clearTimeout(userTimer)
+    userMenuOpen.value = true
+  } else {
+    userTimer = setTimeout(() => {
+      userMenuOpen.value = false
+    }, 250)
+  }
+}
+
 const searchQuery = ref('')
 
 const categories = [
