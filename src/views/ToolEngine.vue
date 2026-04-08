@@ -1,29 +1,27 @@
 <template>
-  <ToolWrapper 
+  <ToolWrapper
     v-if="tool"
-    :title="tool.name" 
+    :title="tool.name"
     :description="tool.description"
     :icon="toolIcon"
     :related="relatedTools"
   >
     <div class="engine-container">
-      <!-- Different engines based on tool type -->
-      <component 
+      <component
         v-if="isImplemented"
-        :is="engineComponent" 
-        :tool="tool" 
+        :is="engineComponent"
+        :tool="tool"
       />
-      
-      <!-- Placeholder for unimplemented tools -->
-      <div v-else class="coming-soon glass">
-        <PhHourglass :size="64" weight="duotone" class="pulsate" />
+
+      <div v-else class="coming-soon">
+        <PhHourglass :size="56" weight="duotone" class="pulsate" />
         <h2>Pracujeme na tom!</h2>
         <p>Nástroj <strong>{{ tool.name }}</strong> bude čoskoro dostupný v plnej kvalite.</p>
         <router-link to="/" class="btn-back clickable">Späť na domov</router-link>
       </div>
     </div>
   </ToolWrapper>
-  
+
   <div v-else class="not-found container">
     <h1>Nástroj nenájdený</h1>
     <router-link to="/">Späť na domov</router-link>
@@ -71,11 +69,11 @@ const toolIcon = computed(() => {
 
 const isImplemented = computed(() => !!engineComponent.value)
 
-// Tool-ID sets per engine (for merged categories)
+// Tool-ID sets per engine
 const PDF_TOOLS     = new Set(['pdf-word','pdf-merge','pdf-split','pdf-compress','pdf-lock'])
 const AUDIO_TOOLS   = new Set(['mp3-wav','wav-mp3','audio-trim','audio-join','vol-boost'])
 const VIDEO_TOOLS   = new Set(['mp4-avi','mov-mp4','video-gif','mp4-mp3','video-compress'])
-const IMG_TOOLS     = new Set(['img-compress','img-upscale','img-remove-bg','png-jpg','img-to-webp','img-to-base64'])
+const IMG_TOOLS     = new Set(['img-compress','img-upscale','img-remove-bg','png-jpg','img-to-webp','img-to-base64','favicon-gen','meme-gen','svg-to-png'])
 const UI_TOOLS      = new Set(['color-conv','gradient-gen','glass-gen','shadow-gen','contrast-checker','palette-gen'])
 const TEXT_TOOLS    = new Set(['word-counter','case-converter','lorem-ipsum','duplicate-remover','list-sorter','diff-checker'])
 const WRITING_TOOLS = new Set(['ig-caption','reel-ideas','bio-link','text-expander','passive-active'])
@@ -88,7 +86,7 @@ const HEALTH_TOOLS  = new Set(['bmr-calc','water-goal','ideal-weight','calorie-b
 const HOME_TOOLS    = new Set(['kitchen-conv','washing-sym','bac-calc','oven-temp'])
 const SCI_TOOLS     = new Set(['morse-code','binary-base','periodic-table','unit-pro'])
 const TRAVEL_TOOLS  = new Set(['currency-conv','world-clock','flight-dist','foreign-phrases','travel-budget','baggage-size'])
-const EDU_TOOLS     = new Set(['citation-gen','gpa-calc','flashcard-maker','equation-solver','flashcard-quiz'])
+const EDU_TOOLS     = new Set(['citation-gen','gpa-calc','flashcard-maker','equation-solver','flashcard-quiz','ai-essay-outline'])
 const FUN_TOOLS     = new Set(['wheel-fortune','spin-bottle','multi-dice','dice-roll','coin-flip','score-keeper','rps-game','truth-dare','card-picker','random-picker'])
 const PROD_TOOLS    = new Set(['pomodoro','time-conv','binary-clock'])
 const MKT_TOOLS     = new Set(['utm-builder','og-preview','li-post-gen','email-subject-test','qr-gen','meta-tags','sitemap-helper','robots-gen','keyword-research'])
@@ -157,12 +155,12 @@ const relatedTools = computed(() => {
   if (!tool.value) return []
   const cat = store.categories.find(c => c.id === route.params.categoryId)
   if (!cat) return []
-  
+
   return cat.tools
     .filter(t => t.id !== tool.value.id)
     .slice(0, 3)
-    .map(t => ({ 
-      name: t.name, 
+    .map(t => ({
+      name: t.name,
       icon: toolIcon.value,
       to: `/${cat.id}/${t.id}`
     }))
@@ -171,31 +169,39 @@ const relatedTools = computed(() => {
 
 <style scoped>
 .engine-container {
-  min-height: 800px;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 2rem 0;
   width: 100%;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
 }
 
-.engine-container > :first-child {
-  width: 1000px;
-  min-height: 700px;
-  flex-shrink: 0;
+.engine-container > * {
+  width: 100%;
 }
 
 .coming-soon {
   text-align: center;
-  padding: 4rem;
-  border-radius: var(--radius-lg);
-  max-width: 500px;
-  border: 1px solid var(--border-soft);
+  padding: 5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.coming-soon h2 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: var(--text-primary);
+}
+
+.coming-soon p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  max-width: 360px;
 }
 
 .pulsate {
   color: var(--accent-gold);
-  margin-bottom: 2rem;
   animation: pulse 2s infinite;
 }
 
@@ -207,7 +213,7 @@ const relatedTools = computed(() => {
 
 .btn-back {
   display: inline-block;
-  margin-top: 2rem;
+  margin-top: 1rem;
   padding: 0.8rem 1.5rem;
   background: var(--accent-gold);
   color: var(--bg-deep);
