@@ -96,7 +96,9 @@ const share = async () => {
 
 /* ── Top bar ── */
 .tool-topbar {
-  position: relative;
+  position: sticky;
+  top: var(--nav-height);
+  z-index: 99;
   background: var(--bg-deep);
   border-bottom: 1px solid var(--border-soft);
 }

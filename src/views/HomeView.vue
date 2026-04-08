@@ -9,7 +9,7 @@
           :description="cat.description"
           :icon="getIconForCategory(cat.id)"
           :count="cat.tools?.length || 0"
-          :to="`/${cat.id}/${cat.tools?.[0]?.id}`"
+          :to="`/${cat.id}`"
           class="category-card"
         />
       </div>

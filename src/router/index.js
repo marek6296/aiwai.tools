@@ -22,6 +22,11 @@ const router = createRouter({
       meta: { hideNav: true }
     },
     {
+      path: '/:categoryId',
+      name: 'category-view',
+      component: () => import('../views/CategoryView.vue')
+    },
+    {
       path: '/:categoryId/:toolId',
       name: 'tool-view',
       component: () => import('../views/ToolEngine.vue')

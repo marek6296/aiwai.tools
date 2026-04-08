@@ -9,7 +9,6 @@
         { "id": "pdf-merge", "name": "Zlúčiť PDF", "description": "Spojenie viacerých súborov." },
         { "id": "pdf-split", "name": "Rozdeliť PDF", "description": "Extrakcia vybraných strán." },
         { "id": "pdf-compress", "name": "Zmenšiť PDF", "description": "Zníž veľkosť bez straty kvality." },
-        { "id": "mp3-wav", "name": "MP3 do WAV", "description": "Bezstratová konverzia formátu." },
         { "id": "audio-trim", "name": "Orezávač hudby", "description": "Vystrihni ľubovoľnú časť." },
         { "id": "video-gif", "name": "Video do GIF", "description": "Vytvor animovaný GIF." },
         { "id": "mp4-mp3", "name": "Video do MP3", "description": "Extrakt zvukovej stopy." },
@@ -27,10 +26,7 @@
         { "id": "img-remove-bg", "name": "Odstrániť pozadie", "description": "Čisté výrezy na jeden klik." },
         { "id": "favicon-gen", "name": "Favicon Generátor", "description": "Vytvor ikonu z obrázka." },
         { "id": "meme-gen", "name": "Meme Generátor", "description": "Tvorba meme na jeden klik." },
-        { "id": "border-radius-viz", "name": "Border Visualizer", "description": "Interaktívny CSS editor hrán." },
-        { "id": "flex-grid-gen", "name": "Flex/Grid Maker", "description": "Vizuálny CSS layout generátor." },
         { "id": "gradient-gen", "name": "Stellar Gradients", "description": "Generátor CSS gradientov." },
-        { "id": "glass-gen", "name": "Glassmorphism", "description": "Moderný sklenený efekt." },
         { "id": "shadow-gen", "name": "Box Shadow Pro", "description": "Vizuálny tvorca tieňov." },
         { "id": "palette-gen", "name": "Palette Magic", "description": "Automatická farebná paleta." }
       ]
@@ -45,8 +41,7 @@
         { "id": "lorem-ipsum", "name": "Slepý text", "description": "Placeholder text na mieru." },
         { "id": "duplicate-remover", "name": "Čistič duplicít", "description": "Odstrán duplikáty z textu." },
         { "id": "diff-checker", "name": "Text Diff Pro", "description": "Porovnaj dva texty." },
-        { "id": "ig-caption", "name": "Caption Master", "description": "Popisky pre sociálne siete." },
-        { "id": "text-expander", "name": "Text Expander", "description": "Rozšírenie krátkych skratiek." }
+        { "id": "ig-caption", "name": "Caption Master", "description": "Popisky pre sociálne siete." }
       ]
     },
     {
@@ -62,9 +57,7 @@
         { "id": "ai-grammar", "name": "Gramatika AI", "description": "Perfektná štylizácia a oprava." },
         { "id": "ai-cover-letter", "name": "AI Sprievodný list", "description": "Motivation letter na mieru." },
         { "id": "ai-resume-gen", "name": "AI Životopis", "description": "Generovanie CV podľa dát." },
-        { "id": "ai-ad-copy", "name": "AI Reklama Copy", "description": "FB/Google ads ktoré predávajú." },
-        { "id": "ai-prompt-lib", "name": "Prompt Library", "description": "Kolekcia najlepších promptov." },
-        { "id": "ai-prompt-mid", "name": "Midjourney Pro", "description": "Profesionálne AI vizuály." }
+        { "id": "ai-ad-copy", "name": "AI Reklama Copy", "description": "FB/Google ads ktoré predávajú." }
       ]
     },
     {
@@ -78,7 +71,6 @@
         { "id": "unix-timestamp", "name": "Unix Converter", "description": "Čas, dátum a timestampy." },
         { "id": "css-minify", "name": "CSS Minifier", "description": "Optimalizácia a zmenšenie CSS." },
         { "id": "js-minify", "name": "JS Minifier", "description": "Minifikácia JavaScript kódu." },
-        { "id": "graphql-play", "name": "GraphQL Play", "description": "Testovanie a tvorba dotazov." },
         { "id": "json-ts", "name": "JSON do TS", "description": "Generuj typy z JSON dát." },
         { "id": "url-parser", "name": "URL Rozbor", "description": "Rozober URL na súčasti." },
         { "id": "regex-tester", "name": "Regex Validátor", "description": "Testuj regulárne výrazy." },
@@ -104,14 +96,11 @@
     {
       "id": "travel",
       "title": "Cestovanie & Jazyky",
-      "description": "Live kurzy mien, svetový čas, letové vzdialenosti a jazykový pomocníci.",
+      "description": "Live kurzy mien, svetový čas a jazykový pomocníci.",
       "tools": [
         { "id": "currency-conv", "name": "Menič mien", "description": "Aktuálne kurzy ECB live." },
         { "id": "world-clock", "name": "Svetové hodiny", "description": "Čas v mestách celého sveta." },
-        { "id": "flight-dist", "name": "Letecká vzdialenosť", "description": "Vzdialenosť medzi mestami." },
         { "id": "foreign-phrases", "name": "AI Frázy", "description": "Základné vety v cudzom jazyku." },
-        { "id": "travel-budget", "name": "Cestovný rozpočet", "description": "Kalkulačka výdavkov na výlet." },
-        { "id": "baggage-size", "name": "Veľkosť batožiny", "description": "Rozmery podľa aeroliniek." },
         { "id": "unit-pro", "name": "Konverzia mieri", "description": "Prevod fyzikálnych jednotiek." }
       ]
     },
