@@ -131,6 +131,7 @@ onMounted(() => {
   min-height: 100vh;
   padding-top: var(--nav-height);
   padding-bottom: 6rem;
+  background: var(--bg-deep);
 }
 
 /* ── Top bar ── */

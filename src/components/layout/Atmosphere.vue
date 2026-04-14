@@ -49,45 +49,43 @@ onMounted(() => {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background-color: var(--bg-deep);
+  background-color: transparent;
   overflow: hidden;
   pointer-events: none;
-  /* Force GPU */
   transform: translateZ(0);
 }
 
 .orb {
   position: absolute;
   border-radius: 50%;
-  /* Reduced blur for performance (80px -> 60px) */
-  filter: blur(60px);
-  opacity: 0.1;
+  filter: blur(80px);
+  opacity: 0.04;
   will-change: transform;
   transform: translateZ(0);
 }
 
 .orb-1 {
-  width: 500px;
-  height: 500px;
-  background: var(--accent-gold);
-  top: -150px;
-  left: 15%;
+  width: 600px;
+  height: 600px;
+  background: #4F46E5;
+  top: -200px;
+  left: 10%;
 }
 
 .orb-2 {
-  width: 450px;
-  height: 450px;
-  background: var(--accent-cyan);
+  width: 500px;
+  height: 500px;
+  background: #7C3AED;
   bottom: -100px;
-  right: 10%;
+  right: 5%;
 }
 
 .orb-3 {
-  width: 350px;
-  height: 350px;
-  background: #7b8fc0;
-  top: 35%;
-  left: 35%;
+  width: 400px;
+  height: 400px;
+  background: #06B6D4;
+  top: 40%;
+  left: 40%;
 }
 
 /* Highly optimized noise overlay */

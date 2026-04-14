@@ -87,6 +87,7 @@ const share = async () => {
   padding-top: var(--nav-height);
   display: flex;
   flex-direction: column;
+  background: var(--bg-deep);
 }
 
 /* ── Top bar ── */
@@ -262,5 +263,89 @@ const share = async () => {
 
 @media (max-width: 480px) {
   .tool-content { padding: 1.25rem; }
+}
+
+/* ═══════════════════════════════════════════════════
+   DEEP ENGINE NORMALIZATION
+   :deep() prepisuje scoped CSS vo všetkých engines
+   — zabezpečuje 100% konzistentný vizuálny štýl
+   ═══════════════════════════════════════════════════ */
+
+/* Inputs, textareas, selects */
+:deep(input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"])),
+:deep(textarea),
+:deep(select) {
+  width: 100%;
+  background: var(--bg-deep) !important;
+  border: 1px solid var(--border-dim) !important;
+  padding: 0.9rem 1rem !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--radius-md) !important;
+  outline: none !important;
+  font-size: 0.95rem !important;
+  font-family: inherit !important;
+  line-height: 1.5 !important;
+  transition: border-color 0.2s, box-shadow 0.2s !important;
+  appearance: none !important;
+  box-shadow: none !important;
+}
+
+:deep(input:focus),
+:deep(textarea:focus),
+:deep(select:focus) {
+  border-color: var(--border-soft) !important;
+  box-shadow: 0 0 0 3px rgba(197,169,106,0.07) !important;
+}
+
+:deep(textarea) {
+  resize: vertical !important;
+  min-height: 120px !important;
+}
+
+/* Labels */
+:deep(label) {
+  display: block !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  color: var(--text-muted) !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Range slider — don't restyle, just reset size */
+:deep(input[type="range"]) {
+  padding: 0 !important;
+  height: 6px !important;
+  border: none !important;
+  box-shadow: none !important;
+  background: var(--bg-soft) !important;
+  border-radius: 3px !important;
+  cursor: pointer !important;
+}
+
+:deep(input[type="range"])::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--accent-gold);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Color picker */
+:deep(input[type="color"]) {
+  padding: 2px !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+/* Number input — allow bigger font for calculators */
+:deep(.calc-engine input[type="number"]),
+:deep(.finance-engine input[type="number"]) {
+  font-size: 1.2rem !important;
+  font-weight: 600 !important;
+  text-align: right !important;
 }
 </style>
